@@ -7,6 +7,7 @@ import { packagesPageSchema } from './packagesPage'
 import { storiesPageSchema } from './storiesPage'
 import { reviewsSchema } from './reviews'
 import { contactPageSchema } from './contactPage'
+import { reviewsPageSchema } from './reviewsPage'
 
 export const schemaTypes = [
   packagesSchema,
@@ -18,4 +19,5 @@ export const schemaTypes = [
   packagesPageSchema,
   storiesPageSchema,
   contactPageSchema,
+  reviewsPageSchema,
 ]

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getReviews } from "@/lib/queries";
+import { getReviews, getReviewsPage } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -12,14 +12,17 @@ export const metadata: Metadata = {
 };
 
 export default async function ReviewsPage() {
-  const reviews = await getReviews();
+  const [reviews, reviewsPage] = await Promise.all([getReviews(), getReviewsPage()]);
+
+  const bannerUrl = reviewsPage?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg";
+  const introText = reviewsPage?.introText || "Whether your interest lies in taking breathtaking safari photos, enjoying the incredible Kenyan wildlife, or simply getting out of your comfort zone, we\u2019ll make sure you have an unforgettable African experience.";
 
   return (
     <div>
       {/* Header */}
       <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg"
+          src={bannerUrl}
           alt="Guest reviews"
           fill
           className="object-cover"
@@ -34,11 +37,7 @@ export default async function ReviewsPage() {
       <div className="max-w-5xl mx-auto px-4 py-14">
         {/* Intro */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="text-stone-600 text-lg leading-relaxed">
-            Whether your interest lies in taking breathtaking safari photos, enjoying the
-            incredible Kenyan wildlife, or simply getting out of your comfort zone,
-            we&apos;ll make sure you have an unforgettable African experience.
-          </p>
+          <p className="text-stone-600 text-lg leading-relaxed">{introText}</p>
         </div>
 
         {reviews.length === 0 ? (
