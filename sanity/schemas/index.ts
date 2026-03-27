@@ -6,6 +6,7 @@ import { whyUsPageSchema } from './whyUsPage'
 import { packagesPageSchema } from './packagesPage'
 import { storiesPageSchema } from './storiesPage'
 import { reviewsSchema } from './reviews'
+import { contactPageSchema } from './contactPage'
 
 export const schemaTypes = [
   packagesSchema,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   whyUsPageSchema,
   packagesPageSchema,
   storiesPageSchema,
+  contactPageSchema,
 ]

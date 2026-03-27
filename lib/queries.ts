@@ -200,6 +200,15 @@ export async function getStoriesPage(): Promise<SanityPageIntro | null> {
   `)
 }
 
+export async function getContactPage(): Promise<{ bannerUrl: string | null; introText: string | null } | null> {
+  return client.fetch(`
+    *[_type == "contactPage"][0] {
+      "bannerUrl": bannerImage.asset->url,
+      introText,
+    }
+  `)
+}
+
 export async function getReviews(): Promise<SanityReview[]> {
   return client.fetch(`
     *[_type == "reviews"] | order(date desc) {

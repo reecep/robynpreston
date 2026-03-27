@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getSiteSettings } from "@/lib/queries";
+import { getSiteSettings, getContactPage } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -12,8 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
+  const [settings, contactPage] = await Promise.all([getSiteSettings(), getContactPage()]);
 
+  const bannerUrl = contactPage?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg";
+  const introText = contactPage?.introText || "I\u2019d love to hear from you! Whether you have a specific package in mind or want to create a completely custom itinerary, just send me an email and let\u2019s start planning.";
   const contactImageUrl = settings?.contactImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg";
   const email = settings?.email || "robyn@robynpreston.com";
   const facebookUrl = settings?.facebookUrl || null;
@@ -24,7 +26,7 @@ export default async function ContactPage() {
       {/* Header */}
       <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
-          src={contactImageUrl}
+          src={bannerUrl}
           alt="Contact Robyn"
           fill
           className="object-cover"
@@ -41,11 +43,7 @@ export default async function ContactPage() {
           {/* Left: contact info */}
           <div className="md:w-2/5">
             <h2 className="text-2xl font-bold text-stone-800 mb-4">Get In Touch</h2>
-            <p className="text-stone-600 leading-relaxed mb-8">
-              I&apos;d love to hear from you! Whether you have a specific package in mind
-              or want to create a completely custom itinerary, just send me an email and
-              let&apos;s start planning.
-            </p>
+            <p className="text-stone-600 leading-relaxed mb-8">{introText}</p>
 
             <div className="space-y-5 text-sm text-stone-600">
               <div className="flex items-start gap-3">
