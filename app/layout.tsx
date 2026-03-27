@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { getSiteSettings } from "@/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,28 +27,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
-
   return (
     <html lang="en">
-      <body className="bg-stone-50 text-stone-800 antialiased">
-        <Navbar
-          logoUrl={settings?.logoUrl ?? null}
-          facebookUrl={settings?.facebookUrl ?? null}
-          instagramUrl={settings?.instagramUrl ?? null}
-        />
-        <main>{children}</main>
-        <Footer
-          email={settings?.email ?? "robyn@robynpreston.com"}
-          facebookUrl={settings?.facebookUrl ?? null}
-          instagramUrl={settings?.instagramUrl ?? null}
-        />
-      </body>
+      <body className="bg-stone-50 text-stone-800 antialiased">{children}</body>
     </html>
   );
 }
