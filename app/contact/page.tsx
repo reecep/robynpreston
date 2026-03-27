@@ -22,7 +22,7 @@ export default async function ContactPage() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
           src={contactImageUrl}
           alt="Contact Robyn"
@@ -30,10 +30,9 @@ export default async function ContactPage() {
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/65" />
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">Contact Robyn</h1>
-          <p className="text-stone-300 text-lg">Let&apos;s plan your Kenya adventure</p>
+          <p className="text-stone-200 text-lg">Let&apos;s plan your Kenya adventure</p>
         </div>
       </div>
 

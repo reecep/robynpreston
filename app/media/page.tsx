@@ -17,7 +17,7 @@ export default async function MediaPage() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
           src="http://www.robynpreston.com/wp-content/uploads/2019/01/media-robyn-preston-next-magazine-january-2019.jpg"
           alt="Media coverage"
@@ -25,10 +25,9 @@ export default async function MediaPage() {
           className="object-cover object-top"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/70" />
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">Media</h1>
-          <p className="text-stone-300 text-lg">
+          <p className="text-stone-200 text-lg">
             Press features, publications &amp; TV appearances
           </p>
         </div>

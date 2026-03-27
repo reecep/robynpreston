@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getPostsByCategory } from "@/lib/queries";
+import { getPostsByCategory, getStoriesPage } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -12,29 +12,40 @@ export const metadata: Metadata = {
 };
 
 export default async function StoriesPage() {
-  const stories = await getPostsByCategory("Stories");
+  const [stories, page] = await Promise.all([getPostsByCategory("Stories"), getStoriesPage()]);
+
+  const bannerUrl = page?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2017/08/LK9.jpg";
+  const introHeading = page?.introHeading || "Stories";
+  const introText = page?.introText || null;
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      {/* Banner */}
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2017/08/LK9.jpg"
+          src={bannerUrl}
           alt="Stories from Africa"
           fill
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/65" />
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">Stories</h1>
-          <p className="text-stone-300 text-lg italic">
+        <div className="relative z-10 text-center px-4 banner-text">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">{introHeading}</h1>
+          <p className="text-stone-200 text-lg italic">
             &ldquo;There is no end to the adventures we can have if only we seek them with our eyes open.&rdquo;
           </p>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-14">
+        {/* Intro text */}
+        {introText && (
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <p className="text-stone-600 text-lg leading-relaxed">{introText}</p>
+          </div>
+        )}
+
+        {/* Stories grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stories.map((post) => (
             <Link
@@ -53,7 +64,7 @@ export default async function StoriesPage() {
                   />
                 ) : (
                   <Image
-                    src="http://www.robynpreston.com/wp-content/uploads/2017/08/LK9.jpg"
+                    src={bannerUrl}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

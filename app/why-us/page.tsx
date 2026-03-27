@@ -49,7 +49,7 @@ export default async function WhyUsPage() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
           src={bannerUrl}
           alt="Why safari with us"
@@ -57,10 +57,9 @@ export default async function WhyUsPage() {
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/60" />
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">Why Safari With Us</h1>
-          <p className="text-stone-300 text-lg">Karibu Kenya!</p>
+          <p className="text-stone-200 text-lg">Karibu Kenya!</p>
         </div>
       </div>
 

@@ -32,7 +32,7 @@ export default async function AboutPage() {
   return (
     <div>
       {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
           src="http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg"
           alt="Robyn Preston in Kenya"
@@ -40,10 +40,9 @@ export default async function AboutPage() {
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/60" />
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">About Robyn</h1>
-          <p className="text-stone-300 text-lg">Robyn E. Preston</p>
+          <p className="text-stone-200 text-lg">Robyn E. Preston</p>
         </div>
       </div>
 

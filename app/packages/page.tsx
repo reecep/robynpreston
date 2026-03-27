@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllPackages } from "@/lib/queries";
+import { getAllPackages, getPackagesPage } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -11,30 +11,38 @@ export const metadata = {
 };
 
 export default async function PackagesPage() {
-  const packages = await getAllPackages();
+  const [packages, page] = await Promise.all([getAllPackages(), getPackagesPage()]);
+
+  const bannerUrl = page?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
+  const introHeading = page?.introHeading || "Safari Packages";
+  const introText = page?.introText || null;
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      {/* Banner */}
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg"
+          src={bannerUrl}
           alt="Safari packages"
           fill
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/60" />
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">Safari Packages</h1>
-          <p className="text-stone-300 text-lg">
-            Handcrafted Kenya safari experiences
-          </p>
+        <div className="relative z-10 text-center px-4 banner-text">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">{introHeading}</h1>
+          <p className="text-stone-200 text-lg">Handcrafted Kenya safari experiences</p>
         </div>
       </div>
 
-      {/* Packages grid */}
       <div className="max-w-6xl mx-auto px-4 py-14">
+        {/* Intro text */}
+        {introText && (
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <p className="text-stone-600 text-lg leading-relaxed">{introText}</p>
+          </div>
+        )}
+
+        {/* Packages grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => (
             <Link

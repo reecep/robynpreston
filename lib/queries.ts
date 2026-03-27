@@ -67,6 +67,12 @@ export type SanityWhyUsPage = {
   bannerUrl: string | null
 }
 
+export type SanityPageIntro = {
+  bannerUrl: string | null
+  introHeading: string | null
+  introText: string | null
+}
+
 // ---------------------------------------------------------------------------
 // Packages
 // ---------------------------------------------------------------------------
@@ -162,6 +168,24 @@ export async function getAboutPage(): Promise<SanityAboutPage | null> {
     *[_type == "aboutPage"][0] {
       bio, mediaFeatures,
       "portraitUrl": portraitImage.asset->url,
+    }
+  `)
+}
+
+export async function getPackagesPage(): Promise<SanityPageIntro | null> {
+  return client.fetch(`
+    *[_type == "packagesPage"][0] {
+      "bannerUrl": bannerImage.asset->url,
+      introHeading, introText,
+    }
+  `)
+}
+
+export async function getStoriesPage(): Promise<SanityPageIntro | null> {
+  return client.fetch(`
+    *[_type == "storiesPage"][0] {
+      "bannerUrl": bannerImage.asset->url,
+      introHeading, introText,
     }
   `)
 }
