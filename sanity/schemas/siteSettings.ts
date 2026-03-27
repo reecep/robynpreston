@@ -27,6 +27,19 @@ export const siteSettingsSchema = defineType({
     }),
     defineField({ name: 'heroHeading', title: 'Homepage Hero Heading', type: 'string' }),
     defineField({ name: 'heroSubtext', title: 'Homepage Hero Subtext', type: 'text', rows: 2 }),
+    defineField({
+      name: 'contactImage',
+      title: 'Contact Page Photo',
+      type: 'image',
+      description: 'Photo shown on the Contact page alongside the contact details.',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'favicon',
+      title: 'Favicon',
+      type: 'image',
+      description: 'Site favicon (square PNG, ideally 512×512). Upload here to update without a code deploy.',
+    }),
   ],
   preview: { prepare: () => ({ title: 'Site Settings' }) },
 })

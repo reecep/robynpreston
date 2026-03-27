@@ -51,6 +51,8 @@ export type SanitySettings = {
   heroImageUrl: string | null
   heroVideoUrl: string | null
   logoUrl: string | null
+  contactImageUrl: string | null
+  faviconUrl: string | null
 }
 
 export type SanityAboutPage = {
@@ -149,6 +151,8 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
       "heroImageUrl": heroImage.asset->url,
       "heroVideoUrl": heroVideo.asset->url,
       "logoUrl": logo.asset->url,
+      "contactImageUrl": contactImage.asset->url,
+      "faviconUrl": favicon.asset->url,
     }
   `)
 }
