@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getWhyUsPage } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Why Safari With Us | REP Kenya Safaris",
@@ -8,7 +9,16 @@ export const metadata: Metadata = {
     "Discover what makes REP Kenya Safaris different — personal hosting, expert guidance, flexible itineraries and off-road access.",
 };
 
-const sections = [
+const defaultHighlights = [
+  { icon: "🦁", label: "Personally hosted by Robyn end-to-end" },
+  { icon: "🚙", label: "Experienced KATO-bonded driver/guide" },
+  { icon: "📍", label: "Off-road licence access in Maasai Mara" },
+  { icon: "🕐", label: "Your time at sightings is up to you" },
+  { icon: "🌿", label: "Small groups for an intimate experience" },
+  { icon: "📸", label: "Photography-focused game drives" },
+];
+
+const defaultSections = [
   {
     title: "Who is REP Kenya Safaris?",
     body: "We are a small boutique company dedicated to making your safari experience in Kenya a wonderful memory you will treasure. I will personally meet you at the airport upon arrival and be with you throughout your whole journey up until our farewell departure at the airport. Everything will be taken care of for your stay in Kenya. I can assist with organising pre/post accommodation and any extra activities you are interested in doing outside of your safari. All you need to do is come, relax and enjoy!",
@@ -27,22 +37,19 @@ const sections = [
   },
 ];
 
-const highlights = [
-  { icon: "🦁", label: "Personally hosted by Robyn end-to-end" },
-  { icon: "🚙", label: "Experienced KATO-bonded driver/guide" },
-  { icon: "📍", label: "Off-road licence access in Maasai Mara" },
-  { icon: "🕐", label: "Your time at sightings is up to you" },
-  { icon: "🌿", label: "Small groups for an intimate experience" },
-  { icon: "📸", label: "Photography-focused game drives" },
-];
+export default async function WhyUsPage() {
+  const whyUs = await getWhyUsPage();
 
-export default function WhyUsPage() {
+  const bannerUrl = whyUs?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg";
+  const highlights: { icon: string; label: string }[] = whyUs?.highlights || defaultHighlights;
+  const sections: { title: string; body: string }[] = whyUs?.sections || defaultSections;
+
   return (
     <div>
       {/* Header */}
       <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg"
+          src={bannerUrl}
           alt="Why safari with us"
           fill
           className="object-cover"

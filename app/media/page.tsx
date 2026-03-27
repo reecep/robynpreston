@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import postsData from "@/data/posts.json";
+import { getPostsByCategory } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Media | REP Kenya Safaris",
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
     "Press coverage, publications and media features about Robyn Preston and REP Kenya Safaris.",
 };
 
-const mediaPosts = postsData.filter((p) => p.categories.includes("Media"));
+export default async function MediaPage() {
+  const mediaPosts = await getPostsByCategory("Media");
 
-export default function MediaPage() {
   return (
     <div>
       {/* Header */}

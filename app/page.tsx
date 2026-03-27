@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import packagesData from "@/data/packages.json";
+import { getAllPackages, getSiteSettings } from "@/lib/queries";
 
 const testimonials = [
   {
@@ -25,15 +25,23 @@ const testimonials = [
   },
 ];
 
-export default function HomePage() {
-  const featuredPackages = packagesData.slice(0, 3);
+export default async function HomePage() {
+  const [packages, settings] = await Promise.all([
+    getAllPackages(),
+    getSiteSettings(),
+  ]);
+
+  const featuredPackages = packages.slice(0, 3);
+  const heroImageUrl = settings?.heroImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
+  const heroHeading = settings?.heroHeading || "Kenya Safari Experiences";
+  const heroSubtext = settings?.heroSubtext || "Small, boutique and personal. I'll be with you from airport arrival to farewell departure — making your African dream a reality.";
 
   return (
     <>
       {/* Hero */}
       <section className="relative h-[90vh] min-h-[500px] flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg"
+          src={heroImageUrl}
           alt="Kenya Safari landscape"
           fill
           className="object-cover"
@@ -46,11 +54,10 @@ export default function HomePage() {
             Robyn E. Preston
           </p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Kenya Safari Experiences
+            {heroHeading}
           </h1>
           <p className="text-lg md:text-xl text-stone-200 mb-8 leading-relaxed">
-            Small, boutique and personal. I&apos;ll be with you from airport arrival to
-            farewell departure — making your African dream a reality.
+            {heroSubtext}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -99,7 +106,7 @@ export default function HomePage() {
             >
               <div className="relative h-52 overflow-hidden">
                 <Image
-                  src={pkg.bannerUrl || pkg.coverUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg"}
+                  src={pkg.bannerUrl || pkg.coverUrl || heroImageUrl}
                   alt={pkg.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -115,7 +122,7 @@ export default function HomePage() {
                     From USD {pkg.lowestPrice} per person
                   </p>
                 )}
-                <p className="text-stone-500 text-sm line-clamp-3">{pkg.content.replace(/<[^>]*>/g, '').substring(0, 120)}…</p>
+                <p className="text-stone-500 text-sm line-clamp-3">{pkg.content?.substring(0, 120)}…</p>
               </div>
             </Link>
           ))}

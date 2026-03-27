@@ -2,12 +2,11 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import postsData from "@/data/posts.json";
-
-const stories = postsData.filter((p) => p.categories.includes("Stories"));
+import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
 
 export async function generateStaticParams() {
-  return stories.map((p) => ({ slug: p.slug }));
+  const slugs = await getPostSlugsByCategory("Stories");
+  return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -16,11 +15,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = stories.find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
   return {
     title: `${post.title} | Stories | REP Kenya Safaris`,
-    description: post.excerpt.substring(0, 160),
+    description: post.excerpt?.substring(0, 160),
   };
 }
 
@@ -30,7 +29,7 @@ export default async function StoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = stories.find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
   return (
@@ -61,7 +60,7 @@ export default async function StoryPage({
 
       <div
         className="prose max-w-none text-stone-700 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        dangerouslySetInnerHTML={{ __html: post.htmlContent || "" }}
       />
 
       <div className="mt-10 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-4 justify-between items-center">

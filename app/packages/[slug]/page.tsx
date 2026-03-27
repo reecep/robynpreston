@@ -1,13 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import packagesData from "@/data/packages.json";
+import { getPackageBySlug, getPackageSlugs } from "@/lib/queries";
 import type { Metadata } from "next";
 
-type Package = (typeof packagesData)[number];
-
 export async function generateStaticParams() {
-  return packagesData.map((pkg) => ({ slug: pkg.slug }));
+  const slugs = await getPackageSlugs();
+  return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -16,11 +15,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const pkg = packagesData.find((p) => p.slug === slug);
+  const pkg = await getPackageBySlug(slug);
   if (!pkg) return {};
   return {
     title: `${pkg.title} | REP Kenya Safaris`,
-    description: pkg.content.replace(/<[^>]*>/g, "").substring(0, 160),
+    description: pkg.content?.substring(0, 160),
   };
 }
 
@@ -33,7 +32,7 @@ function PricingTable({
   dates: string;
   rates: { people: string; pricePerPerson: string }[];
 }) {
-  if (!rates.length) return null;
+  if (!rates?.length) return null;
   return (
     <div className="bg-stone-50 border border-stone-200 rounded-xl p-5 mb-4">
       <h3 className="font-bold text-stone-800 mb-1">{title}</h3>
@@ -64,10 +63,8 @@ export default async function PackagePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const pkg = packagesData.find((p) => p.slug === slug) as Package | undefined;
+  const pkg = await getPackageBySlug(slug);
   if (!pkg) notFound();
-
-  const htmlContent = pkg.content;
 
   return (
     <div>
@@ -109,10 +106,11 @@ export default async function PackagePage({
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {/* Overview */}
-            <div
-              className="prose max-w-none text-stone-700 mb-8"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
-            />
+            {pkg.content && (
+              <p className="text-stone-700 leading-relaxed mb-8 whitespace-pre-wrap">
+                {pkg.content}
+              </p>
+            )}
 
             {/* Testimonial */}
             {pkg.testimonial && (
@@ -122,13 +120,13 @@ export default async function PackagePage({
             )}
 
             {/* Day by day */}
-            {pkg.days.length > 0 && (
+            {pkg.days?.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-stone-800 mb-5">
                   Day by Day Itinerary
                 </h2>
                 <div className="space-y-4">
-                  {pkg.days.map((day, i) => (
+                  {pkg.days.map((day: { number: string; title: string; description?: string; imageUrl?: string }, i: number) => (
                     <div
                       key={i}
                       className="flex gap-4 bg-white rounded-xl overflow-hidden shadow-sm border border-stone-100"
@@ -161,11 +159,11 @@ export default async function PackagePage({
 
             {/* Includes / Excludes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {pkg.includes.length > 0 && (
+              {pkg.includes?.length > 0 && (
                 <div className="bg-green-50 border border-green-100 rounded-xl p-5">
                   <h3 className="font-bold text-green-800 mb-3">✓ Included</h3>
                   <ul className="space-y-1.5">
-                    {pkg.includes.map((item, i) => (
+                    {pkg.includes.map((item: string, i: number) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
                         <span className="text-green-500 font-bold flex-shrink-0">✓</span>
                         {item}
@@ -174,11 +172,11 @@ export default async function PackagePage({
                   </ul>
                 </div>
               )}
-              {pkg.excludes.length > 0 && (
+              {pkg.excludes?.length > 0 && (
                 <div className="bg-red-50 border border-red-100 rounded-xl p-5">
                   <h3 className="font-bold text-red-800 mb-3">✗ Not Included</h3>
                   <ul className="space-y-1.5">
-                    {pkg.excludes.map((item, i) => (
+                    {pkg.excludes.map((item: string, i: number) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
                         <span className="text-red-400 font-bold flex-shrink-0">✗</span>
                         {item}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import postsData from "@/data/posts.json";
+import { getPostsByCategory } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Stories | REP Kenya Safaris",
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
     "Travel narratives and adventure stories from Kenya and across Africa by Robyn Preston.",
 };
 
-const stories = postsData.filter((p) => p.categories.includes("Stories"));
+export default async function StoriesPage() {
+  const stories = await getPostsByCategory("Stories");
 
-export default function StoriesPage() {
   return (
     <div>
       {/* Header */}

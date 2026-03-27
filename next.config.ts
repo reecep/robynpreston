@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "www.robynpreston.com",
         pathname: "/wp-content/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
     ],
   },
 };

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import packagesData from "@/data/packages.json";
+import { getAllPackages } from "@/lib/queries";
 
 export const metadata = {
   title: "Safari Packages | REP Kenya Safaris",
@@ -8,7 +8,9 @@ export const metadata = {
     "Choose from our handcrafted Kenya safari packages — from 5 days in the Maasai Mara to 14-day adventures including the Northern White Rhinos.",
 };
 
-export default function PackagesPage() {
+export default async function PackagesPage() {
+  const packages = await getAllPackages();
+
   return (
     <div>
       {/* Header */}
@@ -32,7 +34,7 @@ export default function PackagesPage() {
       {/* Packages grid */}
       <div className="max-w-6xl mx-auto px-4 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {packagesData.map((pkg) => (
+          {packages.map((pkg) => (
             <Link
               key={pkg.slug}
               href={`/packages/${pkg.slug}`}
@@ -68,7 +70,7 @@ export default function PackagesPage() {
                   </p>
                 )}
                 <p className="text-stone-500 text-sm flex-1 line-clamp-3">
-                  {pkg.content.replace(/<[^>]*>/g, "").substring(0, 150)}…
+                  {pkg.content?.substring(0, 150)}…
                 </p>
                 <span className="mt-4 text-amber-600 font-semibold text-sm group-hover:underline">
                   View itinerary →
