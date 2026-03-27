@@ -73,6 +73,16 @@ export type SanityPageIntro = {
   introText: string | null
 }
 
+export type SanityReview = {
+  _id: string
+  reviewerName: string
+  quote: string
+  packageTitle: string | null
+  packageSlug: string | null
+  date: string | null
+  rating: number | null
+}
+
 // ---------------------------------------------------------------------------
 // Packages
 // ---------------------------------------------------------------------------
@@ -186,6 +196,16 @@ export async function getStoriesPage(): Promise<SanityPageIntro | null> {
     *[_type == "storiesPage"][0] {
       "bannerUrl": bannerImage.asset->url,
       introHeading, introText,
+    }
+  `)
+}
+
+export async function getReviews(): Promise<SanityReview[]> {
+  return client.fetch(`
+    *[_type == "reviews"] | order(date desc) {
+      _id, reviewerName, quote, date, rating,
+      "packageTitle": package->title,
+      "packageSlug": package->slug.current,
     }
   `)
 }

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import packagesData from "@/data/packages.json";
+import { getReviews } from "@/lib/queries";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Guest Reviews | REP Kenya Safaris",
@@ -9,40 +11,13 @@ export const metadata: Metadata = {
     "Read what our guests say about their Kenya safari experience with REP Kenya Safaris and Robyn Preston.",
 };
 
-const extraTestimonials = [
-  {
-    quote:
-      "The range of animals and birds we saw over the 5 days had to be seen to be believed.",
-    source: "5-Day Maasai Mara Safari Guest",
-  },
-  {
-    quote:
-      "A highlight was seeing 100–200 elephants crossing a river, then lingering around our van.",
-    source: "14-Day Kenya Safari Guest",
-  },
-  {
-    quote:
-      "I gained an appreciation for the 'law of nature' within the animal kingdom, and a respect for the people that I met along the way.",
-    source: "10-Day Kenya Safari Guest",
-  },
-  {
-    quote:
-      "Thank you for making our trip so special, I couldn't recommend (and I do often) your safari highly enough. Each day just got better than the last.",
-    source: "Go East Safari Guest",
-  },
-];
-
-export default function ReviewsPage() {
-  const packageTestimonials = packagesData
-    .filter((p) => p.testimonial)
-    .map((p) => ({ quote: p.testimonial, source: p.title }));
-
-  const allTestimonials = [...packageTestimonials, ...extraTestimonials.slice(packageTestimonials.length)];
+export default async function ReviewsPage() {
+  const reviews = await getReviews();
 
   return (
     <div>
       {/* Header */}
-      <div className="relative h-64 flex items-center justify-center text-white overflow-hidden">
+      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
         <Image
           src="http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg"
           alt="Guest reviews"
@@ -50,9 +25,9 @@ export default function ReviewsPage() {
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-stone-900/65" />
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">What Our Guests Say</h1>
+          <p className="text-stone-200 text-lg">Stories from the savannah</p>
         </div>
       </div>
 
@@ -66,22 +41,46 @@ export default function ReviewsPage() {
           </p>
         </div>
 
-        {/* Reviews grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
-          {allTestimonials.map((t, i) => (
-            <blockquote
-              key={i}
-              className="bg-white rounded-xl p-6 shadow-sm border border-stone-100 flex flex-col"
-            >
-              <p className="text-stone-600 italic mb-4 flex-1">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <footer className="text-amber-600 font-semibold text-sm border-t border-stone-100 pt-3">
-                — {t.source}
-              </footer>
-            </blockquote>
-          ))}
-        </div>
+        {reviews.length === 0 ? (
+          <p className="text-center text-stone-400 py-12">No reviews yet — check back soon!</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+            {reviews.map((r) => (
+              <blockquote
+                key={r._id}
+                className="bg-white rounded-xl p-6 shadow-sm border border-stone-100 flex flex-col"
+              >
+                {r.rating && (
+                  <div className="flex gap-0.5 mb-3">
+                    {Array.from({ length: r.rating }).map((_, i) => (
+                      <span key={i} className="text-amber-400 text-base">★</span>
+                    ))}
+                    {Array.from({ length: 5 - r.rating }).map((_, i) => (
+                      <span key={i} className="text-stone-200 text-base">★</span>
+                    ))}
+                  </div>
+                )}
+                <p className="text-stone-600 italic mb-4 flex-1">
+                  &ldquo;{r.quote}&rdquo;
+                </p>
+                <footer className="text-amber-600 font-semibold text-sm border-t border-stone-100 pt-3 flex items-center justify-between gap-2">
+                  <span>— {r.reviewerName}</span>
+                  {r.packageTitle && r.packageSlug && (
+                    <Link
+                      href={`/packages/${r.packageSlug}`}
+                      className="text-xs text-stone-400 hover:text-amber-600 transition-colors font-normal"
+                    >
+                      {r.packageTitle} →
+                    </Link>
+                  )}
+                  {r.packageTitle && !r.packageSlug && (
+                    <span className="text-xs text-stone-400 font-normal">{r.packageTitle}</span>
+                  )}
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        )}
 
         {/* CTA */}
         <div className="text-center bg-amber-50 border border-amber-100 rounded-2xl p-10">

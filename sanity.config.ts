@@ -18,6 +18,7 @@ export default defineConfig({
           .items([
             S.documentTypeListItem('packages').title('Packages'),
             S.documentTypeListItem('posts').title('Posts'),
+            S.documentTypeListItem('reviews').title('Reviews'),
             S.divider(),
             S.listItem()
               .title('Site Settings')
