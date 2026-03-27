@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getSiteSettings } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "REP Kenya Safaris | Robyn E. Preston",
@@ -22,17 +23,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en">
       <body className="bg-stone-50 text-stone-800 antialiased">
-        <Navbar />
+        <Navbar
+          logoUrl={settings?.logoUrl ?? null}
+          facebookUrl={settings?.facebookUrl ?? null}
+          instagramUrl={settings?.instagramUrl ?? null}
+        />
         <main>{children}</main>
-        <Footer />
+        <Footer
+          email={settings?.email ?? "robyn@robynpreston.com"}
+          facebookUrl={settings?.facebookUrl ?? null}
+          instagramUrl={settings?.instagramUrl ?? null}
+        />
       </body>
     </html>
   );

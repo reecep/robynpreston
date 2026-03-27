@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getPackageBySlug, getPackageSlugs } from "@/lib/queries";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getPackageSlugs();
   return slugs.map((s) => ({ slug: s.slug }));

@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAllPackages, getSiteSettings } from "@/lib/queries";
 
+export const revalidate = 60;
+
 const testimonials = [
   {
     quote:
@@ -32,6 +34,7 @@ export default async function HomePage() {
   ]);
 
   const featuredPackages = packages.slice(0, 3);
+  const heroVideoUrl = settings?.heroVideoUrl ?? null;
   const heroImageUrl = settings?.heroImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
   const heroHeading = settings?.heroHeading || "Kenya Safari Experiences";
   const heroSubtext = settings?.heroSubtext || "Small, boutique and personal. I'll be with you from airport arrival to farewell departure — making your African dream a reality.";
@@ -40,14 +43,25 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative h-[90vh] min-h-[500px] flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={heroImageUrl}
-          alt="Kenya Safari landscape"
-          fill
-          className="object-cover"
-          priority
-          unoptimized
-        />
+        {heroVideoUrl ? (
+          <video
+            src={heroVideoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <Image
+            src={heroImageUrl}
+            alt="Kenya Safari landscape"
+            fill
+            className="object-cover"
+            priority
+            unoptimized
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
           <p className="text-amber-400 text-sm uppercase tracking-[0.3em] font-medium mb-4">

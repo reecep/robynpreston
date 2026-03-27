@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getPostSlugsByCategory("Stories");
   return slugs.map((s) => ({ slug: s.slug }));

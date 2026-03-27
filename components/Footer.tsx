@@ -1,6 +1,12 @@
 import Link from "next/link";
 
-export default function Footer() {
+type FooterProps = {
+  email: string;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+};
+
+export default function Footer({ email, facebookUrl, instagramUrl }: FooterProps) {
   return (
     <footer className="bg-stone-900 text-stone-400 mt-16">
       <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -37,24 +43,33 @@ export default function Footer() {
           <h3 className="text-amber-400 font-bold text-sm uppercase tracking-widest mb-3">
             Get In Touch
           </h3>
-          <p className="text-sm mb-2">
-            <a
-              href="mailto:robyn@robynpreston.com"
-              className="hover:text-amber-400 transition-colors"
-            >
-              robyn@robynpreston.com
+          <p className="text-sm mb-3">
+            <a href={`mailto:${email}`} className="hover:text-amber-400 transition-colors">
+              {email}
             </a>
           </p>
-          <p className="text-sm">
-            <a
-              href="https://www.facebook.com/rep.kenya.safaris"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-amber-400 transition-colors"
-            >
-              Facebook: REP Kenya Safaris
-            </a>
-          </p>
+          <div className="flex gap-4">
+            {facebookUrl && (
+              <a
+                href={facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm hover:text-amber-400 transition-colors"
+              >
+                Facebook
+              </a>
+            )}
+            {instagramUrl && (
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm hover:text-amber-400 transition-colors"
+              >
+                Instagram
+              </a>
+            )}
+          </div>
         </div>
       </div>
       <div className="border-t border-stone-800 py-4 text-center text-xs text-stone-600">

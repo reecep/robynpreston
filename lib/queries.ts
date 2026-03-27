@@ -45,9 +45,12 @@ export type SanitySettings = {
   tagline: string
   email: string
   facebookUrl: string
+  instagramUrl: string
   heroHeading: string
   heroSubtext: string
   heroImageUrl: string | null
+  heroVideoUrl: string | null
+  logoUrl: string | null
 }
 
 export type SanityAboutPage = {
@@ -141,8 +144,11 @@ export async function getPostSlugsByCategory(category: string): Promise<{ slug: 
 export async function getSiteSettings(): Promise<SanitySettings | null> {
   return client.fetch(`
     *[_type == "siteSettings"][0] {
-      siteTitle, tagline, email, facebookUrl, heroHeading, heroSubtext,
+      siteTitle, tagline, email, facebookUrl, instagramUrl,
+      heroHeading, heroSubtext,
       "heroImageUrl": heroImage.asset->url,
+      "heroVideoUrl": heroVideo.asset->url,
+      "logoUrl": logo.asset->url,
     }
   `)
 }

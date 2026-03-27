@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAllPackages } from "@/lib/queries";
 
+export const revalidate = 60;
+
 export const metadata = {
   title: "Safari Packages | REP Kenya Safaris",
   description:

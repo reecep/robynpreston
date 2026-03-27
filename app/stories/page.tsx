@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getPostsByCategory } from "@/lib/queries";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Stories | REP Kenya Safaris",
   description:
