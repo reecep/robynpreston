@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAboutPage } from "@/lib/queries";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "About Robyn | REP Kenya Safaris",
   description:
