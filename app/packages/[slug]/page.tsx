@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   const slugs = await getPackageSlugs();
-  return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -126,7 +126,7 @@ export default async function PackagePage({
                   Day by Day Itinerary
                 </h2>
                 <div className="space-y-4">
-                  {pkg.days.map((day: { number: string; title: string; description?: string; imageUrl?: string }, i: number) => (
+                  {pkg.days.map((day, i) => (
                     <div
                       key={i}
                       className="flex gap-4 bg-white rounded-xl overflow-hidden shadow-sm border border-stone-100"
@@ -163,7 +163,7 @@ export default async function PackagePage({
                 <div className="bg-green-50 border border-green-100 rounded-xl p-5">
                   <h3 className="font-bold text-green-800 mb-3">✓ Included</h3>
                   <ul className="space-y-1.5">
-                    {pkg.includes.map((item: string, i: number) => (
+                    {pkg.includes.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
                         <span className="text-green-500 font-bold flex-shrink-0">✓</span>
                         {item}
@@ -176,7 +176,7 @@ export default async function PackagePage({
                 <div className="bg-red-50 border border-red-100 rounded-xl p-5">
                   <h3 className="font-bold text-red-800 mb-3">✗ Not Included</h3>
                   <ul className="space-y-1.5">
-                    {pkg.excludes.map((item: string, i: number) => (
+                    {pkg.excludes.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
                         <span className="text-red-400 font-bold flex-shrink-0">✗</span>
                         {item}

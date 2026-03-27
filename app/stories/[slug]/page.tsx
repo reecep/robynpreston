@@ -6,7 +6,7 @@ import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
 
 export async function generateStaticParams() {
   const slugs = await getPostSlugsByCategory("Stories");
-  return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({

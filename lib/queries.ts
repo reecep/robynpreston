@@ -1,10 +1,72 @@
 import { client } from './sanity'
 
 // ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export type SanityPackageSummary = {
+  _id: string
+  title: string
+  slug: string
+  content: string
+  totalDays: string
+  lowestPrice: string
+  testimonial: string
+  bannerUrl: string | null
+  coverUrl: string | null
+}
+
+export type SanityPackage = SanityPackageSummary & {
+  lowSeasonDates: string | null
+  highSeasonDates: string | null
+  lowSeasonRates: { people: string; pricePerPerson: string }[]
+  highSeasonRates: { people: string; pricePerPerson: string }[]
+  days: { number: string; title: string; description: string; imageUrl: string | null }[]
+  includes: string[]
+  excludes: string[]
+}
+
+export type SanityPost = {
+  _id: string
+  title: string
+  slug: string
+  date: string
+  category: string
+  excerpt: string
+  firstImage: string | null
+}
+
+export type SanityPostFull = SanityPost & {
+  htmlContent: string
+}
+
+export type SanitySettings = {
+  siteTitle: string
+  tagline: string
+  email: string
+  facebookUrl: string
+  heroHeading: string
+  heroSubtext: string
+  heroImageUrl: string | null
+}
+
+export type SanityAboutPage = {
+  bio: string
+  mediaFeatures: string[]
+  portraitUrl: string | null
+}
+
+export type SanityWhyUsPage = {
+  highlights: { icon: string; label: string }[]
+  sections: { title: string; body: string }[]
+  bannerUrl: string | null
+}
+
+// ---------------------------------------------------------------------------
 // Packages
 // ---------------------------------------------------------------------------
 
-export async function getAllPackages() {
+export async function getAllPackages(): Promise<SanityPackageSummary[]> {
   return client.fetch(`
     *[_type == "packages"] | order(_createdAt asc) {
       _id, title,
@@ -16,7 +78,7 @@ export async function getAllPackages() {
   `)
 }
 
-export async function getPackageBySlug(slug: string) {
+export async function getPackageBySlug(slug: string): Promise<SanityPackage | null> {
   return client.fetch(`
     *[_type == "packages" && slug.current == $slug][0] {
       _id, title,
@@ -35,7 +97,7 @@ export async function getPackageBySlug(slug: string) {
   `, { slug })
 }
 
-export async function getPackageSlugs() {
+export async function getPackageSlugs(): Promise<{ slug: string }[]> {
   return client.fetch(`*[_type == "packages"]{ "slug": slug.current }`)
 }
 
@@ -43,7 +105,7 @@ export async function getPackageSlugs() {
 // Posts
 // ---------------------------------------------------------------------------
 
-export async function getPostsByCategory(category: string) {
+export async function getPostsByCategory(category: string): Promise<SanityPost[]> {
   return client.fetch(`
     *[_type == "posts" && category == $category] | order(date desc) {
       _id, title,
@@ -54,7 +116,7 @@ export async function getPostsByCategory(category: string) {
   `, { category })
 }
 
-export async function getPostBySlug(slug: string) {
+export async function getPostBySlug(slug: string): Promise<SanityPostFull | null> {
   return client.fetch(`
     *[_type == "posts" && slug.current == $slug][0] {
       _id, title,
@@ -65,7 +127,7 @@ export async function getPostBySlug(slug: string) {
   `, { slug })
 }
 
-export async function getPostSlugsByCategory(category: string) {
+export async function getPostSlugsByCategory(category: string): Promise<{ slug: string }[]> {
   return client.fetch(
     `*[_type == "posts" && category == $category]{ "slug": slug.current }`,
     { category }
@@ -76,7 +138,7 @@ export async function getPostSlugsByCategory(category: string) {
 // Singletons
 // ---------------------------------------------------------------------------
 
-export async function getSiteSettings() {
+export async function getSiteSettings(): Promise<SanitySettings | null> {
   return client.fetch(`
     *[_type == "siteSettings"][0] {
       siteTitle, tagline, email, facebookUrl, heroHeading, heroSubtext,
@@ -85,7 +147,7 @@ export async function getSiteSettings() {
   `)
 }
 
-export async function getAboutPage() {
+export async function getAboutPage(): Promise<SanityAboutPage | null> {
   return client.fetch(`
     *[_type == "aboutPage"][0] {
       bio, mediaFeatures,
@@ -94,7 +156,7 @@ export async function getAboutPage() {
   `)
 }
 
-export async function getWhyUsPage() {
+export async function getWhyUsPage(): Promise<SanityWhyUsPage | null> {
   return client.fetch(`
     *[_type == "whyUsPage"][0] {
       highlights, sections,
