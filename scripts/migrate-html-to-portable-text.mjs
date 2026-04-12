@@ -376,7 +376,7 @@ async function migrate() {
   console.log('🚀  Starting HTML → Portable Text migration...\n')
 
   const posts = await client.fetch(
-    `*[_type == "posts" && defined(htmlContent) && htmlContent != "" && (!defined(body) || length(body) == 0)]{ _id, title, htmlContent }`
+    `*[_type == "posts" && defined(htmlContent) && htmlContent != ""]{ _id, title, htmlContent }`
   )
 
   if (posts.length === 0) {
