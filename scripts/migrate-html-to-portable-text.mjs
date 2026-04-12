@@ -2,6 +2,20 @@
  * One-off migration: convert htmlContent (WordPress HTML) → body (Portable Text)
  * for all posts that don't yet have a body field.
  *
+ * ── CONFIGURATION ────────────────────────────────────────────────────────────
+ * Set LOCAL_UPLOADS_DIR below to the folder containing your WordPress uploads.
+ * This should be the root "uploads" folder so that year/month subfolders sit
+ * directly inside it.
+ *
+ * Example (Windows):  C:\Users\Reece\Desktop\REPwebsite\uploads
+ * Example (Mac/Linux): /Users/reece/Desktop/REPwebsite/uploads
+ *
+ * The script maps WordPress URLs like:
+ *   http://www.robynpreston.com/wp-content/uploads/2009/08/image.jpg
+ * to local paths like:
+ *   {LOCAL_UPLOADS_DIR}/2009/08/image.jpg
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
  * Usage (Windows CMD):
  *   set SANITY_API_TOKEN=your_token
  *   node scripts/migrate-html-to-portable-text.mjs
@@ -16,6 +30,14 @@
 import { createClient } from '@sanity/client'
 import { parseDocument, DomUtils } from 'htmlparser2'
 import { randomBytes } from 'crypto'
+import { readFileSync, existsSync } from 'fs'
+import { join, extname } from 'path'
+
+// ── SET THIS TO YOUR LOCAL UPLOADS FOLDER ────────────────────────────────────
+const LOCAL_UPLOADS_DIR = process.env.LOCAL_UPLOADS_DIR || 'C:\\Users\\Reece\\Desktop\\REPwebsite\\uploads'
+// ─────────────────────────────────────────────────────────────────────────────
+
+const WP_UPLOADS_PREFIX = 'http://www.robynpreston.com/wp-content/uploads/'
 
 const PROJECT_ID = 'cqw1iau6'
 const DATASET = 'production'
@@ -46,8 +68,14 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms))
 }
 
+const MIME = {
+  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.png': 'image/png', '.gif': 'image/gif',
+  '.webp': 'image/webp', '.svg': 'image/svg+xml',
+}
+
 // ---------------------------------------------------------------------------
-// Image upload (same pattern as import script)
+// Image upload — reads from local disk instead of fetching from the internet
 // ---------------------------------------------------------------------------
 
 const imageCache = new Map()
@@ -57,22 +85,31 @@ async function uploadImage(url) {
   const clean = url.split('?')[0]
   if (imageCache.has(clean)) return imageCache.get(clean)
 
+  // Map WordPress URL → local file path
+  if (!clean.startsWith(WP_UPLOADS_PREFIX)) {
+    console.warn(`    ⚠️  Skipping non-WordPress image URL: ${clean}`)
+    return null
+  }
+
+  // path.join handles Windows vs Unix separators automatically
+  const localPath = join(LOCAL_UPLOADS_DIR, ...clean.slice(WP_UPLOADS_PREFIX.length).split('/'))
+  const filename = localPath.split(/[\\/]/).pop()
+
+  if (!existsSync(localPath)) {
+    console.warn(`    ⚠️  File not found locally: ${localPath}`)
+    return null
+  }
+
   try {
-    console.log(`    📸 Uploading: ${clean.split('/').pop()}`)
-    const res = await fetch(clean)
-    if (!res.ok) {
-      console.warn(`    ⚠️  Fetch failed (${res.status}): ${clean}`)
-      return null
-    }
-    const buffer = await res.arrayBuffer()
-    const contentType = res.headers.get('content-type') || 'image/jpeg'
-    const filename = clean.split('/').pop()
-    const asset = await client.assets.upload('image', Buffer.from(buffer), { filename, contentType })
+    console.log(`    📸 Uploading: ${filename}`)
+    const buffer = readFileSync(localPath)
+    const contentType = MIME[extname(filename).toLowerCase()] || 'image/jpeg'
+    const asset = await client.assets.upload('image', buffer, { filename, contentType })
     const ref = { _type: 'reference', _ref: asset._id }
     imageCache.set(clean, ref)
     return ref
   } catch (err) {
-    console.warn(`    ⚠️  Upload failed: ${clean} — ${err.message}`)
+    console.warn(`    ⚠️  Upload failed: ${filename} — ${err.message}`)
     return null
   }
 }
