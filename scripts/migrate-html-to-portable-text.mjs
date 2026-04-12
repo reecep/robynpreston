@@ -301,14 +301,28 @@ function walkNodes(nodes, depth = 0) {
 // ---------------------------------------------------------------------------
 
 function preprocessHtml(html) {
-  return (html || '')
+  let result = (html || '')
     // [caption ...]<img...>caption text[/caption] → keep inner content
     .replace(/\[caption[^\]]*\]([\s\S]*?)\[\/caption\]/g, '$1')
     // Remove all remaining shortcodes
     .replace(/\[[a-zA-Z_-][^\]]*\/?\]/g, '')
     .replace(/\[\/[a-zA-Z_-]+\]/g, '')
-    // WordPress alignment classes sometimes wrap content in divs with style — leave for parser
     .trim()
+
+  // WordPress stores raw content with double-newlines for paragraph breaks rather
+  // than actual <p> tags (wpautop adds those only at render time). If the content
+  // has no block-level HTML tags, wrap each double-newline-separated chunk in <p>.
+  const hasBlockTags = /<(p|h[1-6]|div|ul|ol|blockquote|figure)\b/i.test(result)
+  if (!hasBlockTags && result) {
+    result = result
+      .split(/\r?\n\r?\n+/)
+      .map(chunk => chunk.trim())
+      .filter(Boolean)
+      .map(chunk => `<p>${chunk}</p>`)
+      .join('\n')
+  }
+
+  return result
 }
 
 // ---------------------------------------------------------------------------
