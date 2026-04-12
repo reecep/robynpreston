@@ -375,22 +375,25 @@ async function htmlToPortableText(html) {
 async function migrate() {
   console.log('🚀  Starting HTML → Portable Text migration...\n')
 
-  const posts = await client.fetch(
-    `*[_type == "posts" && defined(htmlContent) && htmlContent != ""]{ _id, title, htmlContent }`
-  )
+  const posts = await client.fetch(`*[_type == "posts"]{ _id, title, "slug": slug.current, htmlContent }`)
 
   if (posts.length === 0) {
-    console.log('✅  No posts need migrating (all either have body or no htmlContent).')
+    console.log('✅  No posts found in Sanity.')
     return
   }
 
-  console.log(`📝  Found ${posts.length} post(s) to migrate.\n`)
+  console.log(`📝  Found ${posts.length} post(s) total.\n`)
 
   let success = 0
   let failed = 0
 
   for (const post of posts) {
-    console.log(`  → "${post.title}"`)
+    console.log(`  → "${post.title}" [${post.slug}]`)
+    if (!post.htmlContent || post.htmlContent.trim() === '') {
+      console.log(`    ⚠️  htmlContent is empty — skipping`)
+      failed++
+      continue
+    }
     try {
       const body = await htmlToPortableText(post.htmlContent)
 
