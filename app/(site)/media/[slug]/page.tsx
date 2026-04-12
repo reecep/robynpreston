@@ -72,7 +72,7 @@ export default async function MediaPostPage({
         </Link>
         <Link
           href="/contact"
-          className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-6 py-2.5 rounded transition-colors text-sm"
+          className="bg-olive-400 hover:bg-olive-500 text-stone-900 font-bold px-6 py-2.5 rounded transition-colors text-sm"
         >
           Get In Touch
         </Link>

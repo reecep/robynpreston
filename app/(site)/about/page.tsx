@@ -135,7 +135,7 @@ export default async function AboutPage() {
         <div className="text-center">
           <Link
             href="/contact"
-            className="inline-block bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-10 py-3 rounded transition-colors"
+            className="inline-block bg-olive-400 hover:bg-olive-500 text-stone-900 font-bold px-10 py-3 rounded transition-colors"
           >
             Get In Touch
           </Link>

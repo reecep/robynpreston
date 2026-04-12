@@ -93,7 +93,7 @@ export default async function ReviewsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/packages"
-              className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+              className="bg-olive-400 hover:bg-olive-500 text-stone-900 font-bold px-8 py-3 rounded transition-colors"
             >
               View Packages
             </Link>

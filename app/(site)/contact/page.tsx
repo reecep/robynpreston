@@ -104,7 +104,7 @@ export default async function ContactPage() {
 
             <Link
               href={`mailto:${email}`}
-              className="inline-block mt-8 bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+              className="inline-block mt-8 bg-olive-400 hover:bg-olive-500 text-stone-900 font-bold px-8 py-3 rounded transition-colors"
             >
               Send an Email
             </Link>
