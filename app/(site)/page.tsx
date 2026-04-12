@@ -28,9 +28,13 @@ export default async function HomePage() {
 
   const featuredPackages = packages.slice(0, 3);
   const whyUsHeading = homePage?.whyUsHeading || "Why Safari With REP Kenya Safaris?";
+  const whyUsBackgroundImageUrl = homePage?.whyUsBackgroundImageUrl ?? null;
   const whyUsItems = (homePage?.whyUsItems?.length ? homePage.whyUsItems : DEFAULT_WHY_US_ITEMS);
   const testimonialsHeading = homePage?.testimonialsHeading || "What Our Guests Say";
   const testimonials = (homePage?.testimonials?.length ? homePage.testimonials : DEFAULT_TESTIMONIALS);
+  const aboutPreviewImageUrl = homePage?.aboutPreviewImageUrl ?? null;
+  const aboutPreviewHeading = homePage?.aboutPreviewHeading || "From New Zealand to Kenya";
+  const aboutPreviewText = homePage?.aboutPreviewText || "Growing up on a farm in Northland, New Zealand, the outdoors was always home. My first journey to Africa was in 2009. Since then I've visited annually, expanded into wildlife photography, and in 2015 founded REP Kenya Safaris to share this wild, beautiful continent with the world.";
   const heroVideoUrl = settings?.heroVideoUrl ?? null;
   const heroImageUrl = settings?.heroImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
   const heroHeading = settings?.heroHeading || "Kenya Safari Experiences";
@@ -150,13 +154,15 @@ export default async function HomePage() {
 
       {/* Why Us callout */}
       <section className="relative py-20 text-white overflow-hidden">
-        <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg"
-          alt="Robyn on safari"
-          fill
-          className="object-cover"
-          unoptimized
-        />
+        {whyUsBackgroundImageUrl && (
+          <Image
+            src={whyUsBackgroundImageUrl}
+            alt="Robyn on safari"
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        )}
         <div className="absolute inset-0 bg-stone-900/70" />
         <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -212,29 +218,28 @@ export default async function HomePage() {
       {/* About preview */}
       <section className="py-16 max-w-5xl mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-10 items-center">
-          <div className="md:w-2/5 flex-shrink-0">
-            <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
-              <Image
-                src="http://www.robynpreston.com/wp-content/uploads/2019/01/rep-portrait.jpg"
-                alt="Robyn Preston"
-                fill
-                className="object-cover"
-                unoptimized
-              />
+          {aboutPreviewImageUrl && (
+            <div className="md:w-2/5 flex-shrink-0">
+              <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src={aboutPreviewImageUrl}
+                  alt="Robyn Preston"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
             </div>
-          </div>
-          <div className="md:w-3/5">
+          )}
+          <div className={aboutPreviewImageUrl ? "md:w-3/5" : "w-full"}>
             <p className="text-yellow-600 text-sm uppercase tracking-widest font-medium mb-2">
               About Robyn
             </p>
             <h2 className="text-3xl font-bold text-stone-800 mb-4">
-              From New Zealand to Kenya
+              {aboutPreviewHeading}
             </h2>
             <p className="text-stone-600 leading-relaxed mb-4">
-              Growing up on a farm in Northland, New Zealand, the outdoors was always
-              home. My first journey to Africa was in 2009. Since then I&apos;ve visited
-              annually, expanded into wildlife photography, and in 2015 founded REP
-              Kenya Safaris to share this wild, beautiful continent with the world.
+              {aboutPreviewText}
             </p>
             <Link
               href="/about"

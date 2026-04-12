@@ -86,9 +86,13 @@ export type SanityReview = {
 
 export type SanityHomePage = {
   whyUsHeading: string | null
+  whyUsBackgroundImageUrl: string | null
   whyUsItems: string[] | null
   testimonialsHeading: string | null
   testimonials: { quote: string; packageLabel: string }[] | null
+  aboutPreviewImageUrl: string | null
+  aboutPreviewHeading: string | null
+  aboutPreviewText: string | null
 }
 
 // ---------------------------------------------------------------------------
@@ -239,8 +243,12 @@ export async function getReviews(): Promise<SanityReview[]> {
 export async function getHomePage(): Promise<SanityHomePage | null> {
   return client.fetch(`
     *[_type == "homePage"][0] {
-      whyUsHeading, whyUsItems,
+      whyUsHeading,
+      "whyUsBackgroundImageUrl": whyUsBackgroundImage.asset->url,
+      whyUsItems,
       testimonialsHeading, testimonials,
+      "aboutPreviewImageUrl": aboutPreviewImage.asset->url,
+      aboutPreviewHeading, aboutPreviewText,
     }
   `)
 }
