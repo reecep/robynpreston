@@ -26,7 +26,7 @@ const components: PortableTextComponents = {
       return (
         <a
           href={value?.href}
-          className="text-amber-600 hover:text-amber-700 underline"
+          className="text-yellow-600 hover:text-yellow-700 underline"
           {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         >
           {children}

@@ -47,12 +47,12 @@ export default async function ContactPage() {
 
             <div className="space-y-5 text-sm text-stone-600">
               <div className="flex items-start gap-3">
-                <span className="text-amber-500 text-lg mt-0.5">✉</span>
+                <span className="text-yellow-600 text-lg mt-0.5">✉</span>
                 <div>
                   <p className="font-semibold text-stone-800 mb-0.5">Email</p>
                   <a
                     href={`mailto:${email}`}
-                    className="text-amber-600 hover:text-amber-700 transition-colors"
+                    className="text-yellow-600 hover:text-yellow-700 transition-colors"
                   >
                     {email}
                   </a>
@@ -61,14 +61,14 @@ export default async function ContactPage() {
 
               {facebookUrl && (
                 <div className="flex items-start gap-3">
-                  <span className="text-amber-500 text-lg mt-0.5">📘</span>
+                  <span className="text-yellow-600 text-lg mt-0.5">📘</span>
                   <div>
                     <p className="font-semibold text-stone-800 mb-0.5">Facebook</p>
                     <a
                       href={facebookUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-amber-600 transition-colors"
+                      className="hover:text-yellow-700 transition-colors"
                     >
                       REP Kenya Safaris
                     </a>
@@ -78,14 +78,14 @@ export default async function ContactPage() {
 
               {instagramUrl && (
                 <div className="flex items-start gap-3">
-                  <span className="text-amber-500 text-lg mt-0.5">📷</span>
+                  <span className="text-yellow-600 text-lg mt-0.5">📷</span>
                   <div>
                     <p className="font-semibold text-stone-800 mb-0.5">Instagram</p>
                     <a
                       href={instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-amber-600 transition-colors"
+                      className="hover:text-yellow-700 transition-colors"
                     >
                       @repkenyasafaris
                     </a>

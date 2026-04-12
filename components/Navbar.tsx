@@ -55,7 +55,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
             />
           ) : (
             <span className="flex flex-col leading-tight">
-              <span className="text-amber-400 font-bold text-lg tracking-wider uppercase">REP Kenya Safaris</span>
+              <span className="text-yellow-600 font-bold text-lg tracking-wider uppercase">REP Kenya Safaris</span>
               <span className="text-stone-400 text-xs tracking-widest uppercase">Robyn E. Preston</span>
             </span>
           )}
@@ -67,7 +67,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
             <Link
               key={l.href}
               href={l.href}
-              className="hover:text-amber-400 transition-colors"
+              className="hover:text-yellow-700 transition-colors"
             >
               {l.label}
             </Link>
@@ -124,7 +124,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
             <Link
               key={l.href}
               href={l.href}
-              className="hover:text-amber-400 transition-colors py-1"
+              className="hover:text-yellow-700 transition-colors py-1"
               onClick={() => setOpen(false)}
             >
               {l.label}

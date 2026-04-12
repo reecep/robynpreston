@@ -74,11 +74,11 @@ export default async function StoriesPage() {
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-xs text-stone-400 mb-1">{post.date}</p>
-                <h2 className="font-bold text-stone-800 mb-2 group-hover:text-amber-600 transition-colors leading-snug">
+                <h2 className="font-bold text-stone-800 mb-2 group-hover:text-yellow-700 transition-colors leading-snug">
                   {post.title}
                 </h2>
                 <p className="text-stone-500 text-sm flex-1 line-clamp-3">{post.excerpt}</p>
-                <span className="mt-3 text-amber-600 text-sm font-semibold group-hover:underline">
+                <span className="mt-3 text-yellow-600 text-sm font-semibold group-hover:underline">
                   Read more →
                 </span>
               </div>

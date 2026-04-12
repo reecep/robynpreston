@@ -64,7 +64,7 @@ export default async function HomePage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-          <p className="text-amber-400 text-sm uppercase tracking-[0.3em] font-medium mb-4">
+          <p className="text-yellow-600 text-sm uppercase tracking-[0.3em] font-medium mb-4">
             Robyn E. Preston
           </p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -128,11 +128,11 @@ export default async function HomePage() {
                 />
               </div>
               <div className="p-5">
-                <h3 className="font-bold text-lg text-stone-800 mb-2 group-hover:text-amber-600 transition-colors">
+                <h3 className="font-bold text-lg text-stone-800 mb-2 group-hover:text-yellow-700 transition-colors">
                   {pkg.title}
                 </h3>
                 {pkg.lowestPrice && (
-                  <p className="text-amber-600 font-semibold text-sm mb-2">
+                  <p className="text-yellow-600 font-semibold text-sm mb-2">
                     From USD {pkg.lowestPrice} per person
                   </p>
                 )}
@@ -144,7 +144,7 @@ export default async function HomePage() {
         <div className="text-center mt-8">
           <Link
             href="/packages"
-            className="inline-block border-2 border-olive-400 text-amber-600 hover:bg-olive-400 hover:text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+            className="inline-block border-2 border-olive-400 text-yellow-600 hover:bg-olive-400 hover:text-stone-900 font-bold px-8 py-3 rounded transition-colors"
           >
             View All Packages
           </Link>
@@ -174,7 +174,7 @@ export default async function HomePage() {
               "Small groups for a more intimate experience",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold mt-0.5">✓</span>
+                <span className="text-yellow-600 font-bold mt-0.5">✓</span>
                 {item}
               </li>
             ))}
@@ -201,7 +201,7 @@ export default async function HomePage() {
                 className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-400"
               >
                 <p className="italic text-stone-600 mb-3">&ldquo;{t.quote}&rdquo;</p>
-                <footer className="text-sm font-semibold text-amber-600">
+                <footer className="text-sm font-semibold text-yellow-600">
                   — {t.package}
                 </footer>
               </blockquote>
@@ -210,7 +210,7 @@ export default async function HomePage() {
           <div className="text-center mt-8">
             <Link
               href="/reviews"
-              className="text-amber-600 hover:text-amber-700 font-semibold underline"
+              className="text-yellow-600 hover:text-yellow-700 font-semibold underline"
             >
               Read all reviews →
             </Link>
@@ -233,7 +233,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="md:w-3/5">
-            <p className="text-amber-500 text-sm uppercase tracking-widest font-medium mb-2">
+            <p className="text-yellow-600 text-sm uppercase tracking-widest font-medium mb-2">
               About Robyn
             </p>
             <h2 className="text-3xl font-bold text-stone-800 mb-4">
@@ -247,7 +247,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/about"
-              className="inline-block text-amber-600 font-semibold hover:text-amber-700 transition-colors"
+              className="inline-block text-yellow-600 font-semibold hover:text-yellow-700 transition-colors"
             >
               Read my story →
             </Link>

@@ -39,7 +39,7 @@ export default async function StoryPage({
     <div className="max-w-3xl mx-auto px-4 py-12">
       <Link
         href="/stories"
-        className="text-amber-600 hover:text-amber-700 text-sm font-medium mb-6 inline-block"
+        className="text-yellow-600 hover:text-yellow-700 text-sm font-medium mb-6 inline-block"
       >
         ← Back to Stories
       </Link>
@@ -67,7 +67,7 @@ export default async function StoryPage({
       }
 
       <div className="mt-10 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-4 justify-between items-center">
-        <Link href="/stories" className="text-amber-600 hover:underline font-medium text-sm">
+        <Link href="/stories" className="text-yellow-600 hover:underline font-medium text-sm">
           ← Back to Stories
         </Link>
         <Link

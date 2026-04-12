@@ -71,18 +71,18 @@ export default async function PackagesPage() {
                 )}
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <h2 className="font-bold text-lg text-stone-800 mb-2 group-hover:text-amber-600 transition-colors">
+                <h2 className="font-bold text-lg text-stone-800 mb-2 group-hover:text-yellow-700 transition-colors">
                   {pkg.title}
                 </h2>
                 {pkg.lowestPrice && (
-                  <p className="text-amber-600 font-semibold text-sm mb-3">
+                  <p className="text-yellow-600 font-semibold text-sm mb-3">
                     From USD {pkg.lowestPrice} <span className="text-stone-400 font-normal">per person</span>
                   </p>
                 )}
                 <p className="text-stone-500 text-sm flex-1 line-clamp-3">
                   {pkg.content?.substring(0, 150)}…
                 </p>
-                <span className="mt-4 text-amber-600 font-semibold text-sm group-hover:underline">
+                <span className="mt-4 text-yellow-600 font-semibold text-sm group-hover:underline">
                   View itinerary →
                 </span>
               </div>

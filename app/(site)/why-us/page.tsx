@@ -84,7 +84,7 @@ export default async function WhyUsPage() {
           {sections.map((s, i) => (
             <div key={i} className="flex flex-col md:flex-row gap-6 items-start">
               <div className="md:w-1/4">
-                <h2 className="text-xl font-bold text-amber-600 leading-snug">{s.title}</h2>
+                <h2 className="text-xl font-bold text-yellow-600 leading-snug">{s.title}</h2>
               </div>
               <div className="md:w-3/4">
                 <p className="text-stone-600 leading-relaxed">{s.body}</p>

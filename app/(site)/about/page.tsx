@@ -119,13 +119,13 @@ export default async function AboutPage() {
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-stone-700">
             {mediaFeatures.map((m) => (
               <li key={m} className="flex items-center gap-2">
-                <span className="text-amber-500">★</span> {m}
+                <span className="text-yellow-600">★</span> {m}
               </li>
             ))}
           </ul>
           <Link
             href="/media"
-            className="inline-block mt-4 text-amber-600 font-semibold hover:text-amber-700 text-sm"
+            className="inline-block mt-4 text-yellow-600 font-semibold hover:text-yellow-700 text-sm"
           >
             Read all media features →
           </Link>

@@ -52,7 +52,7 @@ export default async function ReviewsPage() {
                 {r.rating && (
                   <div className="flex gap-0.5 mb-3">
                     {Array.from({ length: r.rating }).map((_, i) => (
-                      <span key={i} className="text-amber-400 text-base">★</span>
+                      <span key={i} className="text-yellow-600 text-base">★</span>
                     ))}
                     {Array.from({ length: 5 - r.rating }).map((_, i) => (
                       <span key={i} className="text-stone-200 text-base">★</span>
@@ -62,12 +62,12 @@ export default async function ReviewsPage() {
                 <p className="text-stone-600 italic mb-4 flex-1">
                   &ldquo;{r.quote}&rdquo;
                 </p>
-                <footer className="text-amber-600 font-semibold text-sm border-t border-stone-100 pt-3 flex items-center justify-between gap-2">
+                <footer className="text-yellow-600 font-semibold text-sm border-t border-stone-100 pt-3 flex items-center justify-between gap-2">
                   <span>— {r.reviewerName}</span>
                   {r.packageTitle && r.packageSlug && (
                     <Link
                       href={`/packages/${r.packageSlug}`}
-                      className="text-xs text-stone-400 hover:text-amber-600 transition-colors font-normal"
+                      className="text-xs text-stone-400 hover:text-yellow-700 transition-colors font-normal"
                     >
                       {r.packageTitle} →
                     </Link>

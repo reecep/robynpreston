@@ -50,7 +50,7 @@ function PricingTable({
           {rates.map((r, i) => (
             <tr key={i} className="border-b border-stone-100 last:border-0">
               <td className="py-1.5">{r.people} {Number(r.people) === 1 ? "person" : "people"}</td>
-              <td className="py-1.5 text-right font-semibold text-amber-700">${r.pricePerPerson}</td>
+              <td className="py-1.5 text-right font-semibold text-yellow-700">${r.pricePerPerson}</td>
             </tr>
           ))}
         </tbody>
@@ -95,7 +95,7 @@ export default async function PackagePage({
             )}
             <h1 className="text-3xl md:text-4xl font-bold">{pkg.title}</h1>
             {pkg.lowestPrice && (
-              <p className="text-amber-300 font-semibold mt-2">
+              <p className="text-yellow-300 font-semibold mt-2">
                 From USD {pkg.lowestPrice} per person
               </p>
             )}
@@ -145,7 +145,7 @@ export default async function PackagePage({
                         </div>
                       )}
                       <div className="p-4">
-                        <span className="text-amber-500 font-bold text-sm">
+                        <span className="text-yellow-600 font-bold text-sm">
                           Day {day.number}
                         </span>
                         <h3 className="font-bold text-stone-800 mt-0.5">{day.title}</h3>
@@ -230,7 +230,7 @@ export default async function PackagePage({
               {/* Back */}
               <Link
                 href="/packages"
-                className="block text-center text-amber-600 hover:text-amber-700 font-medium text-sm"
+                className="block text-center text-yellow-600 hover:text-yellow-700 font-medium text-sm"
               >
                 ← Back to all packages
               </Link>
