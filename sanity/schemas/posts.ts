@@ -17,8 +17,48 @@ export const postsSchema = defineType({
     }),
     defineField({ name: 'featuredImage', title: 'Featured Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'excerpt', title: 'Excerpt', type: 'text', rows: 3 }),
-    defineField({ name: 'htmlContent', title: 'Content (HTML)', type: 'text', rows: 20,
-      description: 'Migrated content from WordPress. Edit carefully or use a new post for fresh content.' }),
+    defineField({
+      name: 'body',
+      title: 'Content',
+      type: 'array',
+      description: 'Rich text content. Use the toolbar for headings, bold/italic, links, and images.',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'Heading 2', value: 'h2' },
+            { title: 'Heading 3', value: 'h3' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  defineField({ name: 'href', type: 'url', title: 'URL' }),
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', type: 'string', title: 'Alt text' }),
+            defineField({ name: 'caption', type: 'string', title: 'Caption' }),
+          ],
+        },
+      ],
+    }),
+    defineField({ name: 'htmlContent', title: 'Legacy HTML (WordPress import)', type: 'text', rows: 10,
+      description: 'Read-only. Original WordPress HTML — kept as fallback until body field is populated.' }),
   ],
   preview: {
     select: { title: 'title', media: 'featuredImage', subtitle: 'category' },

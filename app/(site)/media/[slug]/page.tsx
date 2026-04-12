@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
+import PortableTextContent from "@/components/PortableTextContent";
 
 export const revalidate = 60;
 
@@ -60,10 +61,10 @@ export default async function MediaPostPage({
         </div>
       )}
 
-      <div
-        className="prose max-w-none text-stone-700 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: post.htmlContent || "" }}
-      />
+      {post.body?.length
+        ? <PortableTextContent value={post.body} />
+        : <div className="text-stone-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: post.htmlContent || "" }} />
+      }
 
       <div className="mt-10 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-4 justify-between items-center">
         <Link href="/media" className="text-amber-600 hover:underline font-medium text-sm">

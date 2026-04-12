@@ -38,6 +38,7 @@ export type SanityPost = {
 
 export type SanityPostFull = SanityPost & {
   htmlContent: string
+  body: unknown[] | null
 }
 
 export type SanitySettings = {
@@ -142,7 +143,7 @@ export async function getPostBySlug(slug: string): Promise<SanityPostFull | null
     *[_type == "posts" && slug.current == $slug][0] {
       _id, title,
       "slug": slug.current,
-      date, category, excerpt, htmlContent,
+      date, category, excerpt, htmlContent, body,
       "firstImage": featuredImage.asset->url,
     }
   `, { slug })
