@@ -40,7 +40,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-stone-900 text-stone-100 sticky top-0 z-50 shadow-md">
+    <header className="bg-stone-600 text-stone-100 sticky top-0 z-50 shadow-md">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo / wordmark */}
         <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
@@ -107,7 +107,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 rounded hover:bg-stone-700 transition-colors"
+          className="md:hidden p-2 rounded hover:bg-stone-500 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -119,7 +119,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
 
       {/* Mobile menu */}
       {open && (
-        <nav className="md:hidden bg-stone-800 border-t border-stone-700 px-4 py-3 flex flex-col gap-3 text-sm font-medium">
+        <nav className="md:hidden bg-stone-500 border-t border-stone-400 px-4 py-3 flex flex-col gap-3 text-sm font-medium">
           {navLinks.map((l) => (
             <Link
               key={l.href}
@@ -130,7 +130,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
               {l.label}
             </Link>
           ))}
-          <div className="flex gap-4 pt-2 border-t border-stone-700">
+          <div className="flex gap-4 pt-2 border-t border-stone-400">
             {facebookUrl && (
               <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="text-stone-300 hover:text-[#1877f2] transition-colors" aria-label="Facebook">
                 <FacebookIcon />

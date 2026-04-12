@@ -8,7 +8,7 @@ type FooterProps = {
 
 export default function Footer({ email, facebookUrl, instagramUrl }: FooterProps) {
   return (
-    <footer className="bg-stone-900 text-stone-400 mt-16">
+    <footer className="bg-stone-600 text-stone-200 mt-16">
       <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-amber-400 font-bold text-sm uppercase tracking-widest mb-3">
@@ -72,7 +72,7 @@ export default function Footer({ email, facebookUrl, instagramUrl }: FooterProps
           </div>
         </div>
       </div>
-      <div className="border-t border-stone-800 py-4 text-center text-xs text-stone-600">
+      <div className="border-t border-stone-500 py-4 text-center text-xs text-stone-300">
         © {new Date().getFullYear()} REP Kenya Safaris · Robyn E. Preston · All rights reserved
       </div>
     </footer>
