@@ -76,7 +76,7 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/packages"
-              className="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+              className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-8 py-3 rounded transition-colors"
             >
               View Packages
             </Link>
@@ -144,7 +144,7 @@ export default async function HomePage() {
         <div className="text-center mt-8">
           <Link
             href="/packages"
-            className="inline-block border-2 border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+            className="inline-block border-2 border-[olive] text-amber-600 hover:bg-[olive] hover:text-stone-900 font-bold px-8 py-3 rounded transition-colors"
           >
             View All Packages
           </Link>
@@ -181,7 +181,7 @@ export default async function HomePage() {
           </ul>
           <Link
             href="/why-us"
-            className="inline-block bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+            className="inline-block bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-8 py-3 rounded transition-colors"
           >
             Learn More
           </Link>
@@ -267,7 +267,7 @@ export default async function HomePage() {
         </p>
         <Link
           href="/contact"
-          className="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-10 py-3 rounded transition-colors"
+          className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-10 py-3 rounded transition-colors"
         >
           Get In Touch
         </Link>

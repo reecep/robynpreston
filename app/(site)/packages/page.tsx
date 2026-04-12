@@ -63,7 +63,7 @@ export default async function PackagesPage() {
                   unoptimized
                 />
                 {pkg.totalDays && (
-                  <div className="absolute top-3 left-3 bg-amber-500 text-stone-900 text-xs font-bold px-2 py-1 rounded">
+                  <div className="absolute top-3 left-3 bg-[olive] text-stone-900 text-xs font-bold px-2 py-1 rounded">
                     {isNaN(Number(pkg.totalDays))
                       ? pkg.totalDays
                       : `${pkg.totalDays} Days`}
@@ -101,7 +101,7 @@ export default async function PackagesPage() {
           </p>
           <Link
             href="/contact"
-            className="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-8 py-3 rounded transition-colors"
+            className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-8 py-3 rounded transition-colors"
           >
             Contact Robyn
           </Link>

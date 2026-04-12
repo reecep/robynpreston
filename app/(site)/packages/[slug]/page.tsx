@@ -87,7 +87,7 @@ export default async function PackagePage({
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="max-w-4xl mx-auto text-white">
             {pkg.totalDays && (
-              <span className="bg-amber-500 text-stone-900 text-xs font-bold px-3 py-1 rounded mb-3 inline-block">
+              <span className="bg-[olive] text-stone-900 text-xs font-bold px-3 py-1 rounded mb-3 inline-block">
                 {isNaN(Number(pkg.totalDays))
                   ? pkg.totalDays
                   : `${pkg.totalDays} Days`}
@@ -212,7 +212,7 @@ export default async function PackagePage({
               </div>
 
               {/* Enquire CTA */}
-              <div className="bg-amber-500 rounded-2xl p-6 text-center">
+              <div className="bg-[olive] rounded-2xl p-6 text-center">
                 <h3 className="font-bold text-stone-900 text-lg mb-2">
                   Interested in This Package?
                 </h3>

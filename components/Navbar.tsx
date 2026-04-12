@@ -99,7 +99,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
 
           <Link
             href="/contact"
-            className="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-4 py-2 rounded transition-colors"
+            className="bg-[olive] hover:bg-[#6b6b00] text-stone-900 font-bold px-4 py-2 rounded transition-colors"
           >
             Enquire
           </Link>
