@@ -84,6 +84,13 @@ export type SanityReview = {
   rating: number | null
 }
 
+export type SanityHomePage = {
+  whyUsHeading: string | null
+  whyUsItems: string[] | null
+  testimonialsHeading: string | null
+  testimonials: { quote: string; packageLabel: string }[] | null
+}
+
 // ---------------------------------------------------------------------------
 // Packages
 // ---------------------------------------------------------------------------
@@ -225,6 +232,15 @@ export async function getReviews(): Promise<SanityReview[]> {
       _id, reviewerName, quote, date, rating,
       "packageTitle": package->title,
       "packageSlug": package->slug.current,
+    }
+  `)
+}
+
+export async function getHomePage(): Promise<SanityHomePage | null> {
+  return client.fetch(`
+    *[_type == "homePage"][0] {
+      whyUsHeading, whyUsItems,
+      testimonialsHeading, testimonials,
     }
   `)
 }

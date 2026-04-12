@@ -1,39 +1,36 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllPackages, getSiteSettings } from "@/lib/queries";
+import { getAllPackages, getSiteSettings, getHomePage } from "@/lib/queries";
 
 export const revalidate = 60;
 
-const testimonials = [
-  {
-    quote:
-      "The range of animals and birds we saw over the 5 days had to be seen to be believed.",
-    package: "5-Day Maasai Mara Safari",
-  },
-  {
-    quote:
-      "A highlight was seeing 100–200 elephants crossing a river, then lingering around our van.",
-    package: "14-Day Kenya Safari",
-  },
-  {
-    quote:
-      "I gained an appreciation for the 'law of nature' within the animal kingdom, and a respect for the people that I met along the way.",
-    package: "10-Day Kenya Safari",
-  },
-  {
-    quote:
-      "Thank you for making our trip so special, I couldn't recommend (and I do often) your safari highly enough. Each day just got better than the last.",
-    package: "Go East Safari",
-  },
+const DEFAULT_WHY_US_ITEMS = [
+  "Personally hosted by Robyn from arrival to departure",
+  "Dedicated driver/guide with years of experience",
+  "Off-road licensed — access places others can't go",
+  "Flexible itineraries, not cookie-cutter tours",
+  "Small groups for a more intimate experience",
+];
+
+const DEFAULT_TESTIMONIALS = [
+  { quote: "The range of animals and birds we saw over the 5 days had to be seen to be believed.", packageLabel: "5-Day Maasai Mara Safari" },
+  { quote: "A highlight was seeing 100–200 elephants crossing a river, then lingering around our van.", packageLabel: "14-Day Kenya Safari" },
+  { quote: "I gained an appreciation for the 'law of nature' within the animal kingdom, and a respect for the people that I met along the way.", packageLabel: "10-Day Kenya Safari" },
+  { quote: "Thank you for making our trip so special, I couldn't recommend (and I do often) your safari highly enough. Each day just got better than the last.", packageLabel: "Go East Safari" },
 ];
 
 export default async function HomePage() {
-  const [packages, settings] = await Promise.all([
+  const [packages, settings, homePage] = await Promise.all([
     getAllPackages(),
     getSiteSettings(),
+    getHomePage(),
   ]);
 
   const featuredPackages = packages.slice(0, 3);
+  const whyUsHeading = homePage?.whyUsHeading || "Why Safari With REP Kenya Safaris?";
+  const whyUsItems = (homePage?.whyUsItems?.length ? homePage.whyUsItems : DEFAULT_WHY_US_ITEMS);
+  const testimonialsHeading = homePage?.testimonialsHeading || "What Our Guests Say";
+  const testimonials = (homePage?.testimonials?.length ? homePage.testimonials : DEFAULT_TESTIMONIALS);
   const heroVideoUrl = settings?.heroVideoUrl ?? null;
   const heroImageUrl = settings?.heroImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
   const heroHeading = settings?.heroHeading || "Kenya Safari Experiences";
@@ -163,16 +160,10 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-stone-900/70" />
         <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Why Safari With REP Kenya Safaris?
+            {whyUsHeading}
           </h2>
           <ul className="text-stone-200 text-base md:text-lg space-y-3 mb-8 text-left max-w-xl mx-auto">
-            {[
-              "Personally hosted by Robyn from arrival to departure",
-              "Dedicated driver/guide with years of experience",
-              "Off-road licensed — access places others can't go",
-              "Flexible itineraries, not cookie-cutter tours",
-              "Small groups for a more intimate experience",
-            ].map((item, i) => (
+            {whyUsItems.map((item, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="text-yellow-600 font-bold mt-0.5">✓</span>
                 {item}
@@ -192,7 +183,7 @@ export default async function HomePage() {
       <section className="py-16 bg-stone-100">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-stone-800">
-            What Our Guests Say
+            {testimonialsHeading}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {testimonials.map((t, i) => (
@@ -202,7 +193,7 @@ export default async function HomePage() {
               >
                 <p className="italic text-stone-600 mb-3">&ldquo;{t.quote}&rdquo;</p>
                 <footer className="text-sm font-semibold text-yellow-600">
-                  — {t.package}
+                  — {t.packageLabel}
                 </footer>
               </blockquote>
             ))}

@@ -8,12 +8,14 @@ import { storiesPageSchema } from './storiesPage'
 import { reviewsSchema } from './reviews'
 import { contactPageSchema } from './contactPage'
 import { reviewsPageSchema } from './reviewsPage'
+import { homePageSchema } from './homePage'
 
 export const schemaTypes = [
   packagesSchema,
   postsSchema,
   reviewsSchema,
   siteSettingsSchema,
+  homePageSchema,
   aboutPageSchema,
   whyUsPageSchema,
   packagesPageSchema,

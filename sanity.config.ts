@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './sanity/schemas'
 
-const singletons = ['siteSettings', 'aboutPage', 'whyUsPage', 'packagesPage', 'storiesPage', 'contactPage', 'reviewsPage']
+const singletons = ['siteSettings', 'homePage', 'aboutPage', 'whyUsPage', 'packagesPage', 'storiesPage', 'contactPage', 'reviewsPage']
 
 export default defineConfig({
   name: 'rep-kenya-safaris',
@@ -23,6 +23,9 @@ export default defineConfig({
             S.listItem()
               .title('Site Settings')
               .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
+            S.listItem()
+              .title('Home Page')
+              .child(S.document().schemaType('homePage').documentId('homePage')),
             S.listItem()
               .title('About Page')
               .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
