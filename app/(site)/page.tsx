@@ -65,7 +65,7 @@ export default async function HomePage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-          <p className="text-yellow-600 text-sm uppercase tracking-[0.3em] font-medium mb-4">
+          <p className="text-amber-400 text-sm uppercase tracking-[0.3em] font-medium mb-4">
             Robyn E. Preston
           </p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
