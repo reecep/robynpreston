@@ -221,9 +221,9 @@ export default async function HomePage() {
 
       {/* About preview */}
       <section className="py-16 max-w-5xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row gap-10 items-center">
+        <div className="flex flex-col md:flex-row gap-10 md:items-center">
           {aboutPreviewImageUrl && (
-            <div className="md:w-2/5 flex-shrink-0">
+            <div className="w-full md:w-2/5 flex-shrink-0">
               <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
                 <Image
                   src={sanityImageUrl(aboutPreviewImageUrl, 600) ?? aboutPreviewImageUrl}
