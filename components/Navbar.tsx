@@ -9,7 +9,6 @@ const navLinks = [
   { label: "Why Us", href: "/why-us" },
   { label: "Reviews", href: "/reviews" },
   { label: "Stories", href: "/stories" },
-  { label: "Media", href: "/media" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
