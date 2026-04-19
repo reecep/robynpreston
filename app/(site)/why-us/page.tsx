@@ -86,8 +86,10 @@ export default async function WhyUsPage() {
               <div className="md:w-1/4">
                 <h2 className="text-xl font-bold text-yellow-600 leading-snug">{s.title}</h2>
               </div>
-              <div className="md:w-3/4">
-                <p className="text-stone-600 leading-relaxed">{s.body}</p>
+              <div className="md:w-3/4 space-y-4">
+                {s.body.split(/\n\n+/).map((para, j) => (
+                  <p key={j} className="text-stone-600 leading-relaxed">{para}</p>
+                ))}
               </div>
             </div>
           ))}
