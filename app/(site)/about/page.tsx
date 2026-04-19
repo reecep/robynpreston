@@ -41,8 +41,8 @@ export default async function AboutPage() {
       />
 
       <div className="max-w-4xl mx-auto px-4 py-14">
-        <div className="flex flex-col md:flex-row gap-10 items-start mb-12">
-          <div className="md:w-2/5 flex-shrink-0">
+        <div className="flex flex-col md:flex-row gap-10 md:items-start mb-12">
+          <div className="w-full md:w-2/5 flex-shrink-0">
             <div className="relative h-96 rounded-2xl overflow-hidden shadow-lg">
               <Image
                 src={portraitUrl}

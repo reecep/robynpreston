@@ -32,9 +32,9 @@ export default async function ContactPage() {
       />
 
       <div className="max-w-4xl mx-auto px-4 py-14">
-        <div className="flex flex-col md:flex-row gap-12 items-start">
+        <div className="flex flex-col md:flex-row gap-12 md:items-start">
           {/* Left: contact info */}
-          <div className="md:w-2/5">
+          <div className="w-full md:w-2/5">
             <h2 className="text-2xl font-bold text-stone-800 mb-4">Get In Touch</h2>
             <p className="text-stone-600 leading-relaxed mb-8">{introText}</p>
 
@@ -104,7 +104,7 @@ export default async function ContactPage() {
           </div>
 
           {/* Right: photo */}
-          <div className="md:w-3/5">
+          <div className="w-full md:w-3/5">
             <div className="relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg">
               <Image
                 src={contactImageUrl}
