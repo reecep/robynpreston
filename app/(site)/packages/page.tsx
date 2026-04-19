@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAllPackages, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -45,14 +46,11 @@ export default async function PackagesPage() {
             >
               <div className="relative h-52 overflow-hidden">
                 <Image
-                  src={
-                    pkg.bannerUrl ||
-                    pkg.coverUrl ||
-                    "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg"
-                  }
+                  src={sanityImageUrl(pkg.bannerUrl || pkg.coverUrl, 800) ?? '/placeholder.jpg'}
                   alt={pkg.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                   unoptimized
                 />
                 {pkg.totalDays && (

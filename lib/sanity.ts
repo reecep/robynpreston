@@ -18,3 +18,17 @@ const builder = imageUrlBuilder(client)
 export function urlFor(source: any) {
   return builder.image(source)
 }
+
+/**
+ * Appends Sanity CDN image transformation params to a resolved asset URL.
+ * Non-Sanity URLs (e.g. legacy WordPress) are returned unchanged.
+ */
+export function sanityImageUrl(
+  url: string | null | undefined,
+  width: number,
+  quality = 80
+): string | null {
+  if (!url) return null
+  if (!url.includes('cdn.sanity.io')) return url
+  return `${url}?w=${width}&q=${quality}&fm=webp&fit=max`
+}

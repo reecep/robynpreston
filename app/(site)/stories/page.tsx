@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getPostsByCategory, getStoriesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -47,18 +48,20 @@ export default async function StoriesPage() {
               <div className="relative h-48 overflow-hidden bg-stone-200">
                 {post.firstImage ? (
                   <Image
-                    src={post.firstImage}
+                    src={sanityImageUrl(post.firstImage, 600) ?? post.firstImage}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(min-width: 768px) 33vw, 100vw"
                     unoptimized
                   />
                 ) : bannerUrl ? (
                   <Image
-                    src={bannerUrl}
+                    src={sanityImageUrl(bannerUrl, 600) ?? bannerUrl}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(min-width: 768px) 33vw, 100vw"
                     unoptimized
                   />
                 ) : null}

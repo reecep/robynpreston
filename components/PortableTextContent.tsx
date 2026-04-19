@@ -5,7 +5,7 @@ const components: PortableTextComponents = {
   types: {
     image: ({ value }) => {
       if (!value?.asset) return null
-      const src = urlFor(value.asset).width(900).url()
+      const src = urlFor(value.asset).width(900).quality(80).format('webp').url()
       return (
         <figure className="my-6">
           <img src={src} alt={value.alt || ''} className="rounded-lg w-full h-auto" />

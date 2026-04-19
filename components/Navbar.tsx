@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { sanityImageUrl } from "@/lib/sanity";
 
 const navLinks = [
   { label: "Packages", href: "/packages" },
@@ -45,7 +46,7 @@ export default function Navbar({ logoUrl, facebookUrl, instagramUrl }: NavbarPro
         <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           {logoUrl ? (
             <Image
-              src={logoUrl}
+              src={sanityImageUrl(logoUrl, 280) ?? logoUrl}
               alt="REP Kenya Safaris"
               width={140}
               height={48}

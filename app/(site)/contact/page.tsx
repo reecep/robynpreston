@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getSiteSettings, getContactPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -107,10 +108,11 @@ export default async function ContactPage() {
           <div className="w-full md:w-3/5">
             <div className="relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src={contactImageUrl}
+                src={sanityImageUrl(contactImageUrl, 800) ?? contactImageUrl}
                 alt="Robyn Preston"
                 fill
                 className="object-cover"
+                sizes="(min-width: 768px) 60vw, 100vw"
                 unoptimized
               />
             </div>

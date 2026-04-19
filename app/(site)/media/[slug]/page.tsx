@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
 import PortableTextContent from "@/components/PortableTextContent";
+import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -52,10 +53,11 @@ export default async function MediaPostPage({
       {post.firstImage && (
         <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
           <Image
-            src={post.firstImage}
+            src={sanityImageUrl(post.firstImage, 900) ?? post.firstImage}
             alt={post.title}
             fill
             className="object-cover"
+            sizes="(min-width: 768px) 768px, 100vw"
             unoptimized
           />
         </div>

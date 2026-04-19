@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPackageBySlug, getPackageSlugs, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -131,10 +132,11 @@ export default async function PackagePage({
                       {day.imageUrl && (
                         <div className="relative w-28 md:w-40 flex-shrink-0">
                           <Image
-                            src={day.imageUrl}
+                            src={sanityImageUrl(day.imageUrl, 320) ?? day.imageUrl}
                             alt={day.title}
                             fill
                             className="object-cover"
+                            sizes="(min-width: 768px) 160px, 112px"
                             unoptimized
                           />
                         </div>

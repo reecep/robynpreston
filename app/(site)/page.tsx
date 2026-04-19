@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getAllPackages, getSiteSettings, getHomePage } from "@/lib/queries";
+import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -55,11 +56,12 @@ export default async function HomePage() {
           />
         ) : (
           <Image
-            src={heroImageUrl}
+            src={sanityImageUrl(heroImageUrl, 1600) ?? heroImageUrl}
             alt="Kenya Safari landscape"
             fill
             className="object-cover"
             priority
+            sizes="100vw"
             unoptimized
           />
         )}
@@ -121,10 +123,11 @@ export default async function HomePage() {
             >
               <div className="relative h-52 overflow-hidden">
                 <Image
-                  src={pkg.bannerUrl || pkg.coverUrl || heroImageUrl}
+                  src={sanityImageUrl(pkg.bannerUrl || pkg.coverUrl || heroImageUrl, 800) ?? heroImageUrl}
                   alt={pkg.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(min-width: 768px) 33vw, 100vw"
                   unoptimized
                 />
               </div>
@@ -156,10 +159,11 @@ export default async function HomePage() {
       <section className="relative py-20 text-white overflow-hidden">
         {whyUsBackgroundImageUrl && (
           <Image
-            src={whyUsBackgroundImageUrl}
+            src={sanityImageUrl(whyUsBackgroundImageUrl, 1200) ?? whyUsBackgroundImageUrl}
             alt="Robyn on safari"
             fill
             className="object-cover"
+            sizes="100vw"
             unoptimized
           />
         )}
@@ -222,10 +226,11 @@ export default async function HomePage() {
             <div className="md:w-2/5 flex-shrink-0">
               <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src={aboutPreviewImageUrl}
+                  src={sanityImageUrl(aboutPreviewImageUrl, 600) ?? aboutPreviewImageUrl}
                   alt="Robyn Preston"
                   fill
                   className="object-cover"
+                  sizes="(min-width: 768px) 40vw, 100vw"
                   unoptimized
                 />
               </div>

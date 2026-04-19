@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { sanityImageUrl } from "@/lib/sanity";
 
 type Props = {
   imageUrl: string | null;
@@ -11,7 +12,14 @@ export default function PageBanner({ imageUrl, blockColor, title, subtitle }: Pr
   if (imageUrl) {
     return (
       <div className="relative h-96 overflow-hidden">
-        <Image src={imageUrl} alt={title} fill className="object-cover" unoptimized />
+        <Image
+          src={sanityImageUrl(imageUrl, 1600) ?? imageUrl}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          unoptimized
+        />
       </div>
     );
   }
