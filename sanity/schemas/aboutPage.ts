@@ -5,6 +5,7 @@ export const aboutPageSchema = defineType({
   title: 'About Page',
   type: 'document',
   fields: [
+    defineField({ name: 'bannerImage', title: 'Banner Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'bio', title: 'Biography', type: 'text', rows: 15 }),
     defineField({ name: 'portraitImage', title: 'Portrait Image', type: 'image', options: { hotspot: true } }),
     defineField({

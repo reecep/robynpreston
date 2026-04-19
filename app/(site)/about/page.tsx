@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const about = await getAboutPage();
 
+  const bannerUrl = about?.bannerUrl || null;
   const portraitUrl = about?.portraitUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-portrait.jpg";
   const mediaFeatures: string[] = about?.mediaFeatures || [
     "New Zealand Herald",
@@ -33,13 +34,15 @@ export default async function AboutPage() {
     <div>
       {/* Header */}
       <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src="http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg"
-          alt="Robyn Preston in Kenya"
-          fill
-          className="object-cover"
-          unoptimized
-        />
+        {bannerUrl && (
+          <Image
+            src={bannerUrl}
+            alt="Robyn Preston in Kenya"
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        )}
         <div className="relative z-10 text-center px-4 banner-text">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">About Your Safari Guide</h1>
           <p className="text-stone-200 text-lg">Robyn E. Preston</p>

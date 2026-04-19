@@ -57,6 +57,7 @@ export type SanitySettings = {
 }
 
 export type SanityAboutPage = {
+  bannerUrl: string | null
   bio: string
   mediaFeatures: string[]
   portraitUrl: string | null
@@ -188,6 +189,7 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
 export async function getAboutPage(): Promise<SanityAboutPage | null> {
   return client.fetch(`
     *[_type == "aboutPage"][0] {
+      "bannerUrl": bannerImage.asset->url,
       bio, mediaFeatures,
       "portraitUrl": portraitImage.asset->url,
     }
