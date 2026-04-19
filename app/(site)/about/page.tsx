@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAboutPage } from "@/lib/queries";
+import { getAboutPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const about = await getAboutPage();
+  const [about, blockColor] = await Promise.all([getAboutPage(), getHeaderBlockColor()]);
 
   const bannerUrl = about?.bannerUrl || null;
   const portraitUrl = about?.portraitUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-portrait.jpg";
@@ -32,22 +33,12 @@ export default async function AboutPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        {bannerUrl && (
-          <Image
-            src={bannerUrl}
-            alt="Robyn Preston in Kenya"
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        )}
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">About Your Safari Guide</h1>
-          <p className="text-stone-200 text-lg">Robyn E. Preston</p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title="About Your Safari Guide"
+        subtitle="Robyn E. Preston"
+      />
 
       <div className="max-w-4xl mx-auto px-4 py-14">
         <div className="flex flex-col md:flex-row gap-10 items-start mb-12">

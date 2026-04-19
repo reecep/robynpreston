@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getPackageBySlug, getPackageSlugs } from "@/lib/queries";
+import { getPackageBySlug, getPackageSlugs, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -65,45 +66,39 @@ export default async function PackagePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const pkg = await getPackageBySlug(slug);
+  const [pkg, packagesPage, blockColor] = await Promise.all([
+    getPackageBySlug(slug),
+    getPackagesPage(),
+    getHeaderBlockColor(),
+  ]);
   if (!pkg) notFound();
+
+  const detailBannerUrl = packagesPage?.detailBannerUrl || null;
 
   return (
     <div>
-      {/* Hero banner */}
-      <div className="relative h-72 md:h-96 overflow-hidden">
-        <Image
-          src={
-            pkg.bannerUrl ||
-            pkg.coverUrl ||
-            "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg"
-          }
-          alt={pkg.title}
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-          <div className="max-w-4xl mx-auto text-white">
-            {pkg.totalDays && (
-              <span className="bg-olive-400 text-stone-900 text-xs font-bold px-3 py-1 rounded mb-3 inline-block">
-                {isNaN(Number(pkg.totalDays))
-                  ? pkg.totalDays
-                  : `${pkg.totalDays} Days`}
-              </span>
-            )}
-            <h1 className="text-3xl md:text-4xl font-bold">{pkg.title}</h1>
-            {pkg.lowestPrice && (
-              <p className="text-yellow-300 font-semibold mt-2">
-                From USD {pkg.lowestPrice} per person
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* Header banner */}
+      <PageBanner
+        imageUrl={detailBannerUrl}
+        blockColor={blockColor}
+        title={pkg.title}
+      />
 
       <div className="max-w-5xl mx-auto px-4 py-10">
+        {/* Package title / price (shown below the banner) */}
+        <div className="mb-6">
+          {pkg.totalDays && (
+            <span className="bg-olive-400 text-stone-900 text-xs font-bold px-3 py-1 rounded mb-3 inline-block">
+              {isNaN(Number(pkg.totalDays)) ? pkg.totalDays : `${pkg.totalDays} Days`}
+            </span>
+          )}
+          <h1 className="text-3xl md:text-4xl font-bold text-stone-900 mt-2">{pkg.title}</h1>
+          {pkg.lowestPrice && (
+            <p className="text-yellow-600 font-semibold mt-1">
+              From USD {pkg.lowestPrice} per person
+            </p>
+          )}
+        </div>
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Main content */}
           <div className="flex-1 min-w-0">

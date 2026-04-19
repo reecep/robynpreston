@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getPostsByCategory, getStoriesPage } from "@/lib/queries";
+import { getPostsByCategory, getStoriesPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -12,30 +13,20 @@ export const metadata: Metadata = {
 };
 
 export default async function StoriesPage() {
-  const [stories, page] = await Promise.all([getPostsByCategory("Stories"), getStoriesPage()]);
+  const [stories, page, blockColor] = await Promise.all([getPostsByCategory("Stories"), getStoriesPage(), getHeaderBlockColor()]);
 
-  const bannerUrl = page?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2017/08/LK9.jpg";
+  const bannerUrl = page?.bannerUrl || null;
   const introHeading = page?.introHeading || "Stories";
   const introText = page?.introText || null;
 
   return (
     <div>
-      {/* Banner */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Stories from Africa"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">{introHeading}</h1>
-          <p className="text-stone-200 text-lg italic">
-            &ldquo;There is no end to the adventures we can have if only we seek them with our eyes open.&rdquo;
-          </p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title={introHeading}
+        subtitle="There is no end to the adventures we can have if only we seek them with our eyes open."
+      />
 
       <div className="max-w-6xl mx-auto px-4 py-14">
         {/* Intro text */}
@@ -62,7 +53,7 @@ export default async function StoriesPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     unoptimized
                   />
-                ) : (
+                ) : bannerUrl ? (
                   <Image
                     src={bannerUrl}
                     alt={post.title}
@@ -70,7 +61,7 @@ export default async function StoriesPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     unoptimized
                   />
-                )}
+                ) : null}
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-xs text-stone-400 mb-1">{post.date}</p>

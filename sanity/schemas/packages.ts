@@ -5,6 +5,12 @@ export const packagesSchema = defineType({
   title: 'Packages',
   type: 'document',
   fields: [
+    defineField({
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Lower numbers appear first on the Packages listing page.',
+    }),
     defineField({ name: 'title', title: 'Title', type: 'string', validation: r => r.required() }),
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' }, validation: r => r.required() }),
     defineField({ name: 'content', title: 'Description', type: 'text', rows: 6 }),

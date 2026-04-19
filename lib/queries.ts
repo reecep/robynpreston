@@ -54,6 +54,7 @@ export type SanitySettings = {
   logoUrl: string | null
   contactImageUrl: string | null
   faviconUrl: string | null
+  headerBlockColor: string | null
 }
 
 export type SanityAboutPage = {
@@ -73,6 +74,10 @@ export type SanityPageIntro = {
   bannerUrl: string | null
   introHeading: string | null
   introText: string | null
+}
+
+export type SanityPackagesPage = SanityPageIntro & {
+  detailBannerUrl: string | null
 }
 
 export type SanityReview = {
@@ -102,7 +107,7 @@ export type SanityHomePage = {
 
 export async function getAllPackages(): Promise<SanityPackageSummary[]> {
   return client.fetch(`
-    *[_type == "packages"] | order(_createdAt asc) {
+    *[_type == "packages"] | order(order asc, _createdAt asc) {
       _id, title,
       "slug": slug.current,
       content, totalDays, lowestPrice, testimonial,
@@ -182,6 +187,7 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
       "logoUrl": logo.asset->url,
       "contactImageUrl": contactImage.asset->url,
       "faviconUrl": favicon.asset->url,
+      headerBlockColor,
     }
   `)
 }
@@ -196,11 +202,12 @@ export async function getAboutPage(): Promise<SanityAboutPage | null> {
   `)
 }
 
-export async function getPackagesPage(): Promise<SanityPageIntro | null> {
+export async function getPackagesPage(): Promise<SanityPackagesPage | null> {
   return client.fetch(`
     *[_type == "packagesPage"][0] {
       "bannerUrl": bannerImage.asset->url,
       introHeading, introText,
+      "detailBannerUrl": detailBannerImage.asset->url,
     }
   `)
 }
@@ -253,6 +260,13 @@ export async function getHomePage(): Promise<SanityHomePage | null> {
       aboutPreviewHeading, aboutPreviewText,
     }
   `)
+}
+
+export async function getHeaderBlockColor(): Promise<string> {
+  const result = await client.fetch<{ c: string | null } | null>(
+    `*[_type == "siteSettings"][0]{ "c": headerBlockColor }`
+  )
+  return result?.c || '#526218'
 }
 
 export async function getWhyUsPage(): Promise<SanityWhyUsPage | null> {

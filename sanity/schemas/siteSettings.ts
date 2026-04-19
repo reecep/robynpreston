@@ -40,6 +40,13 @@ export const siteSettingsSchema = defineType({
       type: 'image',
       description: 'Site favicon (square PNG, ideally 512×512). Upload here to update without a code deploy.',
     }),
+    defineField({
+      name: 'headerBlockColor',
+      title: 'Page Header Block Colour',
+      type: 'string',
+      description: 'Background colour for page headers when no banner image is uploaded. Any valid CSS colour (e.g. #526218, olive, rgb(82,98,24)).',
+      initialValue: '#526218',
+    }),
   ],
   preview: { prepare: () => ({ title: 'Site Settings' }) },
 })

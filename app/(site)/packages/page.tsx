@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllPackages, getPackagesPage } from "@/lib/queries";
+import { getAllPackages, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -11,28 +12,20 @@ export const metadata = {
 };
 
 export default async function PackagesPage() {
-  const [packages, page] = await Promise.all([getAllPackages(), getPackagesPage()]);
+  const [packages, page, blockColor] = await Promise.all([getAllPackages(), getPackagesPage(), getHeaderBlockColor()]);
 
-  const bannerUrl = page?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
+  const bannerUrl = page?.bannerUrl || null;
   const introHeading = page?.introHeading || "Safari Packages";
   const introText = page?.introText || null;
 
   return (
     <div>
-      {/* Banner */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Safari packages"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">{introHeading}</h1>
-          <p className="text-stone-200 text-lg">Handcrafted Kenya safari experiences</p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title={introHeading}
+        subtitle="Handcrafted Kenya safari experiences"
+      />
 
       <div className="max-w-6xl mx-auto px-4 py-14">
         {/* Intro text */}

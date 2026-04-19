@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getWhyUsPage } from "@/lib/queries";
+import { getWhyUsPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -40,28 +40,20 @@ const defaultSections = [
 ];
 
 export default async function WhyUsPage() {
-  const whyUs = await getWhyUsPage();
+  const [whyUs, blockColor] = await Promise.all([getWhyUsPage(), getHeaderBlockColor()]);
 
-  const bannerUrl = whyUs?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg";
+  const bannerUrl = whyUs?.bannerUrl || null;
   const highlights: { icon: string; label: string }[] = whyUs?.highlights || defaultHighlights;
   const sections: { title: string; body: string }[] = whyUs?.sections || defaultSections;
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Why safari with us"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">Why Safari With Us</h1>
-          <p className="text-stone-200 text-lg">Karibu Kenya!</p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title="Why Safari With Us"
+        subtitle="Karibu Kenya!"
+      />
 
       <div className="max-w-5xl mx-auto px-4 py-14">
         {/* Highlights grid */}

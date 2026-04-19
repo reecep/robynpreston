@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getReviews, getReviewsPage } from "@/lib/queries";
+import { getReviews, getReviewsPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -12,27 +12,19 @@ export const metadata: Metadata = {
 };
 
 export default async function ReviewsPage() {
-  const [reviews, reviewsPage] = await Promise.all([getReviews(), getReviewsPage()]);
+  const [reviews, reviewsPage, blockColor] = await Promise.all([getReviews(), getReviewsPage(), getHeaderBlockColor()]);
 
-  const bannerUrl = reviewsPage?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg";
+  const bannerUrl = reviewsPage?.bannerUrl || null;
   const introText = reviewsPage?.introText || "Whether your interest lies in taking breathtaking safari photos, enjoying the incredible Kenyan wildlife, or simply getting out of your comfort zone, we\u2019ll make sure you have an unforgettable African experience.";
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Guest reviews"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">What Our Guests Say</h1>
-          <p className="text-stone-200 text-lg">Stories from the savannah</p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title="What Our Guests Say"
+        subtitle="Stories from the savannah"
+      />
 
       <div className="max-w-5xl mx-auto px-4 py-14">
         {/* Intro */}

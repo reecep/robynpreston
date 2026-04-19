@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getSiteSettings, getContactPage } from "@/lib/queries";
+import { getSiteSettings, getContactPage, getHeaderBlockColor } from "@/lib/queries";
+import PageBanner from "@/components/PageBanner";
 
 export const revalidate = 60;
 
@@ -12,9 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const [settings, contactPage] = await Promise.all([getSiteSettings(), getContactPage()]);
+  const [settings, contactPage, blockColor] = await Promise.all([getSiteSettings(), getContactPage(), getHeaderBlockColor()]);
 
-  const bannerUrl = contactPage?.bannerUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-kenya-safari-reviews.jpg";
+  const bannerUrl = contactPage?.bannerUrl || null;
   const introText = contactPage?.introText || "I\u2019d love to hear from you! Whether you have a specific package in mind or want to create a completely custom itinerary, just send me an email and let\u2019s start planning.";
   const contactImageUrl = settings?.contactImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg";
   const email = settings?.email || "robyn@robynpreston.com";
@@ -23,20 +24,12 @@ export default async function ContactPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="relative h-96 flex items-center justify-center text-white overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Contact Robyn"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">Contact Robyn</h1>
-          <p className="text-stone-200 text-lg">Let&apos;s plan your Kenya adventure</p>
-        </div>
-      </div>
+      <PageBanner
+        imageUrl={bannerUrl}
+        blockColor={blockColor}
+        title="Contact Robyn"
+        subtitle="Let's plan your Kenya adventure"
+      />
 
       <div className="max-w-4xl mx-auto px-4 py-14">
         <div className="flex flex-col md:flex-row gap-12 items-start">
