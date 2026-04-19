@@ -41,7 +41,7 @@ export default async function AboutPage() {
           unoptimized
         />
         <div className="relative z-10 text-center px-4 banner-text">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">About Robyn</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">About Your Safari Guide</h1>
           <p className="text-stone-200 text-lg">Robyn E. Preston</p>
         </div>
       </div>
