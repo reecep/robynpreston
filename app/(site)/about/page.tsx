@@ -36,7 +36,7 @@ export default async function AboutPage() {
       <PageBanner
         imageUrl={bannerUrl}
         blockColor={blockColor}
-        title="About Your Safari Guide"
+        title="About Your Safari Host"
         subtitle="Robyn E. Preston"
       />
 
@@ -105,24 +105,6 @@ export default async function AboutPage() {
               </>
             )}
           </div>
-        </div>
-
-        {/* Media highlights */}
-        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-8 mb-10">
-          <h2 className="text-xl font-bold text-stone-800 mb-4">In the Media</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-stone-700">
-            {mediaFeatures.map((m) => (
-              <li key={m} className="flex items-center gap-2">
-                <span className="text-yellow-600">★</span> {m}
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/media"
-            className="inline-block mt-4 text-yellow-600 font-semibold hover:text-yellow-700 text-sm"
-          >
-            Read all media features →
-          </Link>
         </div>
 
         {/* CTA */}
