@@ -1,17 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getPostsByCategory, getStoriesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
 import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Stories | REP Kenya Safaris",
-  description:
-    "Travel narratives and adventure stories from Kenya and across Africa by Robyn Preston.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getStoriesPage();
+  const ogImage = sanityImageUrl(page?.bannerUrl, 1200);
+  return {
+    title: "Stories",
+    description:
+      "Travel narratives and adventure stories from Kenya and across Africa by Robyn Preston.",
+    alternates: {
+      canonical: "/stories",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {},
+  };
+}
 
 export default async function StoriesPage() {
   const [stories, page, blockColor] = await Promise.all([getPostsByCategory("Stories"), getStoriesPage(), getHeaderBlockColor()]);
@@ -80,6 +90,18 @@ export default async function StoriesPage() {
           ))}
         </div>
       </div>
+      <Script
+        id="stories-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Stories", path: "/stories" },
+            ])
+          ),
+        }}
+      />
     </div>
   );
 }

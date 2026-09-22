@@ -1,16 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
+import type { Metadata } from "next";
 import { getAllPackages, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
 import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata = {
-  title: "Safari Packages | REP Kenya Safaris",
-  description:
-    "Choose from our handcrafted Kenya safari packages — from 5 days in the Maasai Mara to 14-day adventures including the Northern White Rhinos.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPackagesPage();
+  const ogImage = sanityImageUrl(page?.bannerUrl, 1200);
+  return {
+    title: "Safari Packages",
+    description:
+      "Choose from our handcrafted Kenya safari packages — from 5 days in the Maasai Mara to 14-day adventures including the Northern White Rhinos.",
+    alternates: {
+      canonical: "/packages",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {},
+  };
+}
 
 export default async function PackagesPage() {
   const [packages, page, blockColor] = await Promise.all([getAllPackages(), getPackagesPage(), getHeaderBlockColor()]);
@@ -44,15 +55,17 @@ export default async function PackagesPage() {
               href={`/packages/${pkg.slug}`}
               className="group bg-white rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow flex flex-col"
             >
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src={sanityImageUrl(pkg.bannerUrl || pkg.coverUrl, 800) ?? '/placeholder.jpg'}
-                  alt={pkg.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  unoptimized
-                />
+              <div className="relative h-52 overflow-hidden bg-stone-200">
+                {(pkg.bannerUrl || pkg.coverUrl) && (
+                  <Image
+                    src={sanityImageUrl(pkg.bannerUrl || pkg.coverUrl, 800)!}
+                    alt={pkg.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    unoptimized
+                  />
+                )}
                 {pkg.totalDays && (
                   <div className="absolute top-3 left-3 bg-olive-400 text-stone-900 text-xs font-bold px-2 py-1 rounded">
                     {isNaN(Number(pkg.totalDays))
@@ -98,6 +111,18 @@ export default async function PackagesPage() {
           </Link>
         </div>
       </div>
+      <Script
+        id="packages-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Packages", path: "/packages" },
+            ])
+          ),
+        }}
+      />
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getPostBySlug, getPostSlugsByCategory } from "@/lib/queries";
 import PortableTextContent from "@/components/PortableTextContent";
 import { sanityImageUrl } from "@/lib/sanity";
+import { articleSchema, breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -21,9 +23,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
+  const ogImage = sanityImageUrl(post.firstImage, 1200);
   return {
-    title: `${post.title} | Stories | REP Kenya Safaris`,
+    title: `${post.title} | Stories`,
     description: post.excerpt?.substring(0, 160),
+    alternates: {
+      canonical: `/stories/${slug}`,
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : undefined,
   };
 }
 
@@ -79,6 +86,34 @@ export default async function StoryPage({
           View Safari Packages
         </Link>
       </div>
+      <Script
+        id="story-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Stories", path: "/stories" },
+              { name: post.title, path: `/stories/${slug}` },
+            ])
+          ),
+        }}
+      />
+      <Script
+        id="story-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            articleSchema({
+              title: post.title,
+              description: post.excerpt,
+              path: `/stories/${slug}`,
+              imageUrl: sanityImageUrl(post.firstImage, 1200),
+              datePublished: post.date,
+            })
+          ),
+        }}
+      />
     </div>
   );
 }

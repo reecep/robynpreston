@@ -1,9 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { getAllPackages, getSiteSettings, getHomePage } from "@/lib/queries";
 import { sanityImageUrl } from "@/lib/sanity";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Kenya Safari Experiences",
+  description:
+    "Small boutique safari company specialising in handcrafted Kenya safari experiences. Personal, flexible, unforgettable — personally hosted by Robyn E. Preston.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 const DEFAULT_WHY_US_ITEMS = [
   "Personally hosted by Robyn from arrival to departure",
@@ -37,7 +47,7 @@ export default async function HomePage() {
   const aboutPreviewHeading = homePage?.aboutPreviewHeading || "From New Zealand to Kenya";
   const aboutPreviewText = homePage?.aboutPreviewText || "Growing up on a farm in Northland, New Zealand, the outdoors was always home. My first journey to Africa was in 2009. Since then I've visited annually, expanded into wildlife photography, and in 2015 founded REP Kenya Safaris to share this wild, beautiful continent with the world.";
   const heroVideoUrl = settings?.heroVideoUrl ?? null;
-  const heroImageUrl = settings?.heroImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/robyn-preston-in-kenya.jpg";
+  const heroImageUrl = settings?.heroImageUrl ?? null;
   const heroHeading = settings?.heroHeading || "Kenya Safari Experiences";
   const heroSubtext = settings?.heroSubtext || "Small, boutique and personal. I'll be with you from airport arrival to farewell departure — making your African dream a reality.";
 
@@ -54,7 +64,7 @@ export default async function HomePage() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
-        ) : (
+        ) : heroImageUrl ? (
           <Image
             src={sanityImageUrl(heroImageUrl, 1600) ?? heroImageUrl}
             alt="Kenya Safari landscape"
@@ -64,6 +74,8 @@ export default async function HomePage() {
             sizes="100vw"
             unoptimized
           />
+        ) : (
+          <div className="absolute inset-0 bg-stone-800" />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
@@ -121,15 +133,20 @@ export default async function HomePage() {
               href={`/packages/${pkg.slug}`}
               className="group bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow"
             >
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src={sanityImageUrl(pkg.bannerUrl || pkg.coverUrl || heroImageUrl, 800) ?? heroImageUrl}
-                  alt={pkg.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  unoptimized
-                />
+              <div className="relative h-52 overflow-hidden bg-stone-200">
+                {(pkg.bannerUrl || pkg.coverUrl || heroImageUrl) && (
+                  <Image
+                    src={
+                      sanityImageUrl(pkg.bannerUrl || pkg.coverUrl || heroImageUrl, 800) ??
+                      (pkg.bannerUrl || pkg.coverUrl || heroImageUrl)!
+                    }
+                    alt={pkg.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    unoptimized
+                  />
+                )}
               </div>
               <div className="p-5">
                 <h3 className="font-bold text-lg text-stone-800 mb-2 group-hover:text-yellow-700 transition-colors">

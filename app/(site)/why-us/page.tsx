@@ -1,15 +1,26 @@
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getWhyUsPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Why Safari With Us | REP Kenya Safaris",
-  description:
-    "Discover what makes REP Kenya Safaris different — personal hosting, expert guidance, flexible itineraries and off-road access.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const whyUs = await getWhyUsPage();
+  const ogImage = sanityImageUrl(whyUs?.bannerUrl, 1200);
+  return {
+    title: "Why Safari With Us",
+    description:
+      "Discover what makes REP Kenya Safaris different — personal hosting, expert guidance, flexible itineraries and off-road access.",
+    alternates: {
+      canonical: "/why-us",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {},
+  };
+}
 
 const defaultHighlights = [
   { icon: "🦁", label: "Personally hosted by Robyn end-to-end" },
@@ -109,6 +120,18 @@ export default async function WhyUsPage() {
           </div>
         </div>
       </div>
+      <Script
+        id="why-us-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Why Us", path: "/why-us" },
+            ])
+          ),
+        }}
+      />
     </div>
   );
 }

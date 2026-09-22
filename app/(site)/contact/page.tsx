@@ -1,24 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getSiteSettings, getContactPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
 import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Contact Robyn | REP Kenya Safaris",
-  description:
-    "Get in touch with Robyn Preston to start planning your Kenya safari adventure.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const [settings, contactPage] = await Promise.all([getSiteSettings(), getContactPage()]);
+  const ogImage = sanityImageUrl(contactPage?.bannerUrl || settings?.contactImageUrl, 1200);
+  return {
+    title: "Contact Robyn",
+    description:
+      "Get in touch with Robyn Preston to start planning your Kenya safari adventure.",
+    alternates: {
+      canonical: "/contact",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {},
+  };
+}
 
 export default async function ContactPage() {
   const [settings, contactPage, blockColor] = await Promise.all([getSiteSettings(), getContactPage(), getHeaderBlockColor()]);
 
   const bannerUrl = contactPage?.bannerUrl || null;
   const introText = contactPage?.introText || "I\u2019d love to hear from you! Whether you have a specific package in mind or want to create a completely custom itinerary, just send me an email and let\u2019s start planning.";
-  const contactImageUrl = settings?.contactImageUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/about-robyn-preston-kenya-safaris.jpg";
+  const contactImageUrl = settings?.contactImageUrl || null;
   const email = settings?.email || "robyn@robynpreston.com";
   const facebookUrl = settings?.facebookUrl || null;
   const instagramUrl = settings?.instagramUrl || null;
@@ -105,20 +115,34 @@ export default async function ContactPage() {
           </div>
 
           {/* Right: photo */}
-          <div className="w-full md:w-3/5">
-            <div className="relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg">
-              <Image
-                src={sanityImageUrl(contactImageUrl, 800) ?? contactImageUrl}
-                alt="Robyn Preston"
-                fill
-                className="object-cover"
-                sizes="(min-width: 768px) 60vw, 100vw"
-                unoptimized
-              />
+          {contactImageUrl && (
+            <div className="w-full md:w-3/5">
+              <div className="relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src={sanityImageUrl(contactImageUrl, 800) ?? contactImageUrl}
+                  alt="Robyn Preston"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 768px) 60vw, 100vw"
+                  unoptimized
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
+      <Script
+        id="contact-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Contact", path: "/contact" },
+            ])
+          ),
+        }}
+      />
     </div>
   );
 }

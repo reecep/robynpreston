@@ -1,23 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getAboutPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
 import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "About Robyn | REP Kenya Safaris",
-  description:
-    "From a Northland farm to Kenya's wild places — the story of Robyn Preston and REP Kenya Safaris.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const about = await getAboutPage();
+  const ogImage = sanityImageUrl(about?.portraitUrl, 1200);
+  return {
+    title: "About Robyn",
+    description:
+      "From a Northland farm to Kenya's wild places — the story of Robyn Preston and REP Kenya Safaris.",
+    alternates: {
+      canonical: "/about",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : undefined,
+  };
+}
 
 export default async function AboutPage() {
   const [about, blockColor] = await Promise.all([getAboutPage(), getHeaderBlockColor()]);
 
   const bannerUrl = about?.bannerUrl || null;
-  const portraitUrl = about?.portraitUrl || "http://www.robynpreston.com/wp-content/uploads/2019/01/rep-portrait.jpg";
+  const portraitUrl = about?.portraitUrl || null;
   const mediaFeatures: string[] = about?.mediaFeatures || [
     "New Zealand Herald",
     "Australian Women's Weekly NZ",
@@ -43,19 +53,21 @@ export default async function AboutPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-14">
         <div className="flex flex-col md:flex-row gap-10 md:items-start mb-12">
-          <div className="w-full md:w-2/5 flex-shrink-0">
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-lg">
-              <Image
-                src={sanityImageUrl(portraitUrl, 600) ?? portraitUrl}
-                alt="Robyn Preston"
-                fill
-                className="object-cover"
-                sizes="(min-width: 768px) 40vw, 100vw"
-                unoptimized
-              />
+          {portraitUrl && (
+            <div className="w-full md:w-2/5 flex-shrink-0">
+              <div className="relative h-96 rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src={sanityImageUrl(portraitUrl, 600) ?? portraitUrl}
+                  alt="Robyn Preston"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  unoptimized
+                />
+              </div>
             </div>
-          </div>
-          <div className="md:w-3/5 prose prose-stone max-w-none">
+          )}
+          <div className={portraitUrl ? "md:w-3/5 prose prose-stone max-w-none" : "prose prose-stone max-w-none"}>
             {bioParagraphs.length > 0 ? (
               bioParagraphs.map((para, i) => <p key={i}>{para}</p>)
             ) : (
@@ -109,6 +121,20 @@ export default async function AboutPage() {
           </div>
         </div>
 
+        {/* Featured in */}
+        {mediaFeatures.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-center text-xs font-bold uppercase tracking-widest text-stone-400 mb-5">
+              As Featured In
+            </h2>
+            <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-stone-500 text-sm font-medium">
+              {mediaFeatures.map((feature, i) => (
+                <li key={i}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* CTA */}
         <div className="text-center">
           <Link
@@ -119,6 +145,18 @@ export default async function AboutPage() {
           </Link>
         </div>
       </div>
+      <Script
+        id="about-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "About", path: "/about" },
+            ])
+          ),
+        }}
+      />
     </div>
   );
 }

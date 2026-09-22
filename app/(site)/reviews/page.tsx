@@ -1,15 +1,26 @@
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { getReviews, getReviewsPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
+import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema, reviewsSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Guest Reviews | REP Kenya Safaris",
-  description:
-    "Read what our guests say about their Kenya safari experience with REP Kenya Safaris and Robyn Preston.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const reviewsPage = await getReviewsPage();
+  const ogImage = sanityImageUrl(reviewsPage?.bannerUrl, 1200);
+  return {
+    title: "Guest Reviews",
+    description:
+      "Read what our guests say about their Kenya safari experience with REP Kenya Safaris and Robyn Preston.",
+    alternates: {
+      canonical: "/reviews",
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {},
+  };
+}
 
 export default async function ReviewsPage() {
   const [reviews, reviewsPage, blockColor] = await Promise.all([getReviews(), getReviewsPage(), getHeaderBlockColor()]);
@@ -98,6 +109,25 @@ export default async function ReviewsPage() {
           </div>
         </div>
       </div>
+      <Script
+        id="reviews-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Reviews", path: "/reviews" },
+            ])
+          ),
+        }}
+      />
+      {reviews.length > 0 && (
+        <Script
+          id="reviews-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsSchema(reviews)) }}
+        />
+      )}
     </div>
   );
 }

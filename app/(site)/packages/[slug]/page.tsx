@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { getPackageBySlug, getPackageSlugs, getPackagesPage, getHeaderBlockColor } from "@/lib/queries";
 import PageBanner from "@/components/PageBanner";
 import { sanityImageUrl } from "@/lib/sanity";
+import { breadcrumbSchema, packageSchema } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -21,9 +23,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const pkg = await getPackageBySlug(slug);
   if (!pkg) return {};
+  const ogImage = sanityImageUrl(pkg.bannerUrl || pkg.coverUrl, 1200);
   return {
-    title: `${pkg.title} | REP Kenya Safaris`,
+    title: pkg.title,
     description: pkg.content?.substring(0, 160),
+    alternates: {
+      canonical: `/packages/${slug}`,
+    },
+    openGraph: ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : undefined,
   };
 }
 
@@ -83,6 +90,7 @@ export default async function PackagePage({
         imageUrl={detailBannerUrl}
         blockColor={blockColor}
         title={pkg.title}
+        showTitle={false}
       />
 
       <div className="max-w-5xl mx-auto px-4 py-10">
@@ -235,6 +243,35 @@ export default async function PackagePage({
           </aside>
         </div>
       </div>
+      <Script
+        id="package-breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Packages", path: "/packages" },
+              { name: pkg.title, path: `/packages/${slug}` },
+            ])
+          ),
+        }}
+      />
+      <Script
+        id="package-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            packageSchema({
+              title: pkg.title,
+              description: pkg.content,
+              slug,
+              imageUrl: sanityImageUrl(pkg.bannerUrl || pkg.coverUrl, 1200),
+              totalDays: pkg.totalDays,
+              lowestPrice: pkg.lowestPrice,
+            })
+          ),
+        }}
+      />
     </div>
   );
 }
